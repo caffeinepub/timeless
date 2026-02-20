@@ -1,0 +1,130 @@
+:root {
+  --game-primary: oklch(0.6 0.08 240);
+  --game-secondary: oklch(0.5 0.06 220);
+  --game-accent: oklch(0.65 0.1 200);
+  --game-muted: oklch(0.4 0.04 240);
+  --game-glow: oklch(0.7 0.12 210);
+}
+
+.game-card {
+  background: oklch(0.15 0.02 240 / 0.9);
+  border: 1px solid oklch(0.3 0.04 240 / 0.3);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px oklch(0 0 0 / 0.5);
+}
+
+.game-title {
+  color: var(--game-glow);
+  text-shadow: 0 0 20px oklch(0.7 0.12 210 / 0.5);
+  letter-spacing: 0.05em;
+}
+
+.game-button {
+  background: var(--game-primary);
+  color: oklch(0.95 0.02 240);
+  border: 1px solid var(--game-accent);
+  transition: all 0.3s ease;
+}
+
+.game-button:hover {
+  background: var(--game-accent);
+  box-shadow: 0 0 20px oklch(0.65 0.1 200 / 0.4);
+}
+
+.hud-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  font-family: 'Courier New', monospace;
+}
+
+.hud-crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hud-top {
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 2rem;
+}
+
+.hud-bottom {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  right: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.hud-stat,
+.hud-health,
+.hud-ammo {
+  background: oklch(0.1 0.02 240 / 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid oklch(0.3 0.04 240 / 0.3);
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.hud-health {
+  min-width: 200px;
+}
+
+.hud-label {
+  font-size: 0.75rem;
+  color: oklch(0.6 0.06 220);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.hud-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--game-glow);
+  text-shadow: 0 0 10px oklch(0.7 0.12 210 / 0.3);
+}
+
+.hud-value-small {
+  font-size: 0.875rem;
+  color: oklch(0.7 0.08 220);
+}
+
+.health-bar-container {
+  width: 100%;
+}
+
+.health-bar-bg {
+  width: 100%;
+  height: 8px;
+  background: oklch(0.2 0.02 240 / 0.5);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.health-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--game-accent), var(--game-glow));
+  border-radius: 4px;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px oklch(0.65 0.1 200 / 0.5);
+}
+
+.hud-footer {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}

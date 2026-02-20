@@ -1,0 +1,18 @@
+{
+  "frontend/src/App.tsx": "Main application entry point that renders the Game component with game theme styling.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for backend integration including game state management, damage, enemy defeats, and score tracking.",
+  "frontend/src/hooks/usePlayerControls.ts": "Custom hook managing WASD keyboard input and mouse movement for first-person controls.",
+  "frontend/src/hooks/useWeapon.ts": "Custom hook handling weapon firing mechanics with fire rate limiting and muzzle flash state.",
+  "frontend/src/hooks/useGameState.ts": "Local game state management hook that syncs with backend for health, ammunition, score, and enemy defeats.",
+  "frontend/src/hooks/useEnemies.ts": "Custom hook managing enemy array state with damage and destruction logic.",
+  "frontend/src/components/Game.tsx": "Main game component orchestrating Canvas, Physics, Player, Arena, HUD, and pointer lock controls with atmospheric lighting.",
+  "frontend/src/components/Player.tsx": "First-person player controller with physics-based movement, camera rotation, and raycasting for shooting mechanics using proper Vector2 type for camera coordinates.",
+  "frontend/src/components/Arena.tsx": "3D game environment with floor, walls, obstacles, skybox texture, and enemy placement using physics colliders with properly typed tuple arrays.",
+  "frontend/src/components/Enemy.tsx": "Enemy target component with health tracking, visual damage feedback, health bar display, and destruction state with properly initialized ref.",
+  "frontend/src/components/MuzzleFlash.tsx": "Animated muzzle flash effect using generated texture with additive blending and fade-out animation.",
+  "frontend/src/components/HUD.tsx": "Heads-up display overlay showing crosshair, health bar, ammunition count, score, and footer attribution.",
+  "frontend/src/components/HealthBar.tsx": "Visual health bar component displaying current health as a percentage with gradient fill.",
+  "frontend/src/styles/game-theme.css": "Game-specific styling with timeless ethereal aesthetic using muted OKLCH colors, glows, and HUD layouts.",
+  "frontend/src/index.css": "Global styles with OKLCH color system customized for dark, atmospheric timeless shooter theme.",
+  "frontend/tailwind.config.js": "Tailwind configuration extended with timeless color palette and monospace font for HUD elements."
+}

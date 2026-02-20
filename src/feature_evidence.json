@@ -1,0 +1,148 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-implement-a-3d-first-person-shooter-game-environment-using-react-three-fiber-with-controllable-player-movement-wasd-keys-for-forward-backward-strafe-mouse-for-looking-around",
+      "featureTitle": "Implement a 3D first-person shooter game environment using React Three Fiber with controllable player movement (WASD keys for forward/backward/strafe, mouse for looking around)",
+      "files": [
+        "frontend/src/components/Game.tsx",
+        "frontend/src/components/Player.tsx",
+        "frontend/src/hooks/usePlayerControls.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-shooting-mechanics-with-visual-feedback-including-muzzle-flash-projectile-trajectories-and-hit-detection-against-targets",
+      "featureTitle": "Add shooting mechanics with visual feedback including muzzle flash, projectile trajectories, and hit detection against targets",
+      "files": [
+        "frontend/src/components/MuzzleFlash.tsx",
+        "frontend/src/components/Player.tsx",
+        "frontend/src/hooks/useWeapon.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-a-3d-game-arena-with-obstacles-cover-positions-and-environmental-geometry-for-tactical-gameplay",
+      "featureTitle": "Create a 3D game arena with obstacles, cover positions, and environmental geometry for tactical gameplay",
+      "files": [
+        "frontend/src/components/Arena.tsx",
+        "frontend/src/components/Game.tsx",
+        "frontend/src/components/Player.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-enemy-targets-or-npcs-that-can-be-destroyed-when-shot-with-visual-feedback-for-hits-and-destruction",
+      "featureTitle": "Implement enemy targets or NPCs that can be destroyed when shot, with visual feedback for hits and destruction",
+      "files": [
+        "frontend/src/components/Arena.tsx",
+        "frontend/src/components/Enemy.tsx",
+        "frontend/src/components/Game.tsx",
+        "frontend/src/hooks/useEnemies.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-game-state-management-tracking-player-health-ammunition-count-score-and-enemy-defeats",
+      "featureTitle": "Add game state management tracking player health, ammunition count, score, and enemy defeats",
+      "files": [
+        "frontend/src/components/Game.tsx",
+        "frontend/src/hooks/useGameState.ts",
+        "frontend/src/hooks/useWeapon.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-display-hud-elements-showing-crosshair-health-bar-ammunition-counter-and-current-score",
+      "featureTitle": "Display HUD elements showing crosshair, health bar, ammunition counter, and current score",
+      "files": [
+        "frontend/src/components/Game.tsx",
+        "frontend/src/components/HUD.tsx",
+        "frontend/src/components/HealthBar.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-apply-a-timeless-ethereal-visual-aesthetic-with-muted-colors-atmospheric-lighting-and-a-sense-of-suspended-time-to-create-a-distinctive-art-style",
+      "featureTitle": "Apply a timeless, ethereal visual aesthetic with muted colors, atmospheric lighting, and a sense of suspended time to create a distinctive art style",
+      "files": [
+        "frontend/src/components/Arena.tsx",
+        "frontend/src/components/Enemy.tsx",
+        "frontend/src/components/Game.tsx",
+        "frontend/src/components/HUD.tsx",
+        "frontend/src/styles/game-theme.css"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

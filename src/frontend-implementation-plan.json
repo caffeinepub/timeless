@@ -1,216 +1,120 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Timeless Shooter - 3D First-Person Shooter Game",
+  "title": "Diagnose and fix load error preventing game initialization",
   "requirements": [
     {
-      "id": "REQ-1",
-      "summary": "Implement 3D game environment with controllable player movement using WASD and mouse controls",
+      "id": "REQ-16",
+      "summary": "Add detailed error tracking to capture and log the specific load error occurring on deployment, including stack traces, component mount failures, and any React Three Fiber or Physics initialization errors",
       "acceptanceCriteria": [
-        "Player can move in all directions using WASD keys",
-        "Mouse controls camera rotation for looking around",
-        "Movement is smooth and responsive"
+        "Console logs clearly identify the source of the load error",
+        "Error messages include component names and lifecycle stage where failure occurs",
+        "Stack traces are preserved and logged for debugging"
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/Game.tsx",
-          "operation": "create",
-          "description": "Create main 3D game component using React Three Fiber. Set up Canvas with camera configuration for first-person perspective. This is a 3D game component that will contain all game logic and rendering."
-        },
-        {
-          "path": "frontend/src/hooks/usePlayerControls.ts",
-          "operation": "create",
-          "description": "Create custom hook for player movement controls. Implement WASD keyboard input handling for forward/backward/strafe movement. Add mouse input handling for camera rotation (look around). Ensure smooth and responsive movement with proper velocity and acceleration."
-        },
-        {
-          "path": "frontend/src/components/Player.tsx",
-          "operation": "create",
-          "description": "Create Player component representing the first-person camera and controller. Use usePlayerControls hook to handle movement and rotation. Implement physics-based movement with collision detection."
-        }
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "summary": "Add shooting mechanics with muzzle flash, projectile trajectories, and hit detection",
-      "acceptanceCriteria": [
-        "Left mouse click fires weapon",
-        "Visible projectile or raycast effect when shooting",
-        "Muzzle flash animation appears on firing",
-        "Hits are detected on target objects"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/hooks/useWeapon.ts",
-          "operation": "create",
-          "description": "Create custom hook for weapon mechanics. Implement left mouse click handler to fire weapon. Add raycasting for hit detection against target objects. Track ammunition count and prevent firing when empty. Include logic to display muzzle flash effect using the generated image at frontend/public/assets/generated/muzzle-flash.dim_256x256.png."
-        },
-        {
-          "path": "frontend/src/components/MuzzleFlash.tsx",
-          "operation": "create",
-          "description": "Create MuzzleFlash component for visual feedback when firing. Use sprite or plane with the generated muzzle flash image at frontend/public/assets/generated/muzzle-flash.dim_256x256.png. Implement animation that shows flash briefly then fades out."
-        },
-        {
-          "path": "frontend/src/components/Projectile.tsx",
-          "operation": "create",
-          "description": "Create Projectile component for visible bullet trajectory. Implement movement along firing direction with physics. Handle collision detection and trigger hit effects on contact with targets."
+          "operation": "modify",
+          "description": "Add comprehensive error tracking and logging throughout the component lifecycle, including Canvas initialization, Physics provider setup, and all child component mounting. Wrap critical initialization blocks in try-catch statements that capture and log full stack traces with component context. Add console logging for each lifecycle stage (pre-Canvas, Canvas mounting, Physics initialization, Player mounting, Arena mounting) to identify exactly where failures occur."
         },
         {
           "path": "frontend/src/components/Player.tsx",
           "operation": "modify",
-          "description": "Integrate useWeapon hook into Player component. Wire shooting mechanics to player's camera perspective. Position MuzzleFlash component relative to camera when firing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "summary": "Create 3D arena with obstacles, cover positions, and collision detection for tactical gameplay",
-      "acceptanceCriteria": [
-        "Arena contains walls, obstacles, and cover objects",
-        "Player collision prevents walking through solid objects",
-        "Environment provides tactical positioning opportunities"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/Arena.tsx",
-          "operation": "create",
-          "description": "Create Arena component containing the 3D game environment. Build walls, floor, and ceiling using React Three Fiber boxes/meshes. Add various obstacles and cover objects (boxes, barriers) positioned strategically for tactical gameplay. Apply timeless aesthetic with muted colors and atmospheric materials. Use the generated skybox texture at frontend/public/assets/generated/skybox.dim_2048x2048.png for the environment background."
-        },
-        {
-          "path": "frontend/src/hooks/useCollision.ts",
-          "operation": "create",
-          "description": "Create custom hook for collision detection. Implement bounding box or sphere collision checks between player and arena geometry. Return collision state to prevent movement through solid objects."
-        },
-        {
-          "path": "frontend/src/components/Player.tsx",
-          "operation": "modify",
-          "description": "Integrate useCollision hook to prevent player from passing through walls and obstacles. Adjust movement logic to respect collision boundaries."
-        },
-        {
-          "path": "frontend/src/components/Game.tsx",
-          "operation": "modify",
-          "description": "Add Arena component to the game scene. Position and configure lighting for atmospheric effect that supports the timeless aesthetic."
-        }
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "summary": "Implement destructible enemy targets with hit feedback and destruction states",
-      "acceptanceCriteria": [
-        "Enemy targets are visible in the arena",
-        "Targets react visually when hit",
-        "Targets are removed or show destroyed state after sufficient damage"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/Enemy.tsx",
-          "operation": "create",
-          "description": "Create Enemy component representing a destructible target. Implement health tracking and visual feedback for hits (color change, animation). Handle destruction state when health reaches zero with removal or destroyed visual. Apply timeless aesthetic styling consistent with arena design."
-        },
-        {
-          "path": "frontend/src/hooks/useEnemies.ts",
-          "operation": "create",
-          "description": "Create custom hook to manage enemy state array. Handle spawning enemies at defined positions. Provide methods to damage and remove enemies. Track defeated enemies count for score calculation."
+          "description": "Add error boundaries and logging around physics body initialization, camera setup, and raycasting operations. Log all initialization parameters and any exceptions with full stack traces to identify player-specific loading failures."
         },
         {
           "path": "frontend/src/components/Arena.tsx",
           "operation": "modify",
-          "description": "Integrate enemy placement within the arena. Position enemies at strategic locations that create engaging gameplay."
-        },
-        {
-          "path": "frontend/src/components/Game.tsx",
-          "operation": "modify",
-          "description": "Wire useEnemies hook into game state. Connect weapon hit detection to enemy damage system. Update backend when enemies are defeated via defeatEnemy method."
+          "description": "Add error tracking for physics body creation, texture loading, and enemy instantiation. Wrap each physics object creation and enemy component rendering in error handlers that log failures with component names and initialization state."
         }
       ]
     },
     {
-      "id": "REQ-5",
-      "summary": "Add game state management for health, ammunition, score, and enemy defeats with backend persistence",
+      "id": "REQ-17",
+      "summary": "Verify that all required dependencies for React Three Fiber Canvas and Physics provider are properly loaded before attempting to render the 3D scene",
       "acceptanceCriteria": [
-        "Player health is tracked and displayed",
-        "Ammunition count decreases with each shot",
-        "Score increases when enemies are defeated",
-        "Game state persists across sessions via backend"
+        "Canvas only renders after all Three.js dependencies are confirmed available",
+        "Physics provider initialization is validated before use",
+        "Loading screen displays until all critical dependencies are ready"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/hooks/useGameState.ts",
+          "path": "frontend/src/hooks/useDependencyCheck.ts",
           "operation": "create",
-          "description": "Create custom hook for comprehensive game state management. Track player health, ammunition count, score, and enemies defeated locally. Integrate with backend interface methods (getGameState, startGame, increaseScore, defeatEnemy, takeDamage, rechargeWeapon) to persist state. Load initial state from backend on game start. Sync local state changes to backend appropriately."
+          "description": "Create a new hook that validates the availability of React Three Fiber, Three.js core modules, and Cannon physics dependencies before game initialization. Return loading state and error information if dependencies are missing or failed to load."
         },
         {
           "path": "frontend/src/components/Game.tsx",
           "operation": "modify",
-          "description": "Integrate useGameState hook into main game component. Pass game state values to child components (Player, HUD, etc.). Wire game events (taking damage, shooting, defeating enemies) to state update methods. Initialize game state by calling startGame backend method with player ID."
-        },
-        {
-          "path": "frontend/src/hooks/useWeapon.ts",
-          "operation": "modify",
-          "description": "Connect weapon firing to ammunition state. Decrement ammo count on each shot. Prevent firing when ammunition is zero."
+          "description": "Integrate the useDependencyCheck hook to validate all 3D dependencies before rendering Canvas. Keep LoadingScreen visible until dependencies are confirmed ready. Add conditional rendering logic that prevents Canvas from mounting until all checks pass."
         }
       ]
     },
     {
-      "id": "REQ-6",
-      "summary": "Display HUD with crosshair, health bar, ammunition counter, and score",
+      "id": "REQ-18",
+      "summary": "Add fallback rendering logic that displays a meaningful error message to the user if the 3D canvas fails to initialize, rather than showing a blank screen",
       "acceptanceCriteria": [
-        "Crosshair appears at screen center",
-        "Health bar shows current player health",
-        "Ammo counter displays remaining ammunition",
-        "Score is visible and updates in real-time"
+        "User sees a clear error message explaining the load failure",
+        "Error message includes actionable steps (e.g., 'Please refresh the page')",
+        "Fallback UI renders even when 3D initialization fails"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/HUD.tsx",
-          "operation": "create",
-          "description": "Create HUD component for displaying game information overlay. Position crosshair at screen center using the generated image at frontend/public/assets/generated/crosshair.dim_64x64.png. Display health bar showing current/max health. Show ammunition counter with current ammo count. Display score prominently. Apply timeless aesthetic styling with semi-transparent overlays and muted colors consistent with game theme."
-        },
-        {
-          "path": "frontend/src/components/HealthBar.tsx",
-          "operation": "create",
-          "description": "Create HealthBar component as a visual progress bar. Accept current and max health as props. Style with muted colors fitting the timeless aesthetic."
-        },
-        {
           "path": "frontend/src/components/Game.tsx",
           "operation": "modify",
-          "description": "Add HUD component to game with absolute positioning over the 3D canvas. Pass game state values (health, ammo, score) from useGameState hook to HUD component."
+          "description": "Add a fallback UI state that renders when Canvas or Physics initialization fails. Display a user-friendly error message explaining the 3D graphics failed to load, with actionable steps like refreshing the page or checking WebGL support. Ensure this fallback UI renders even when all React Three Fiber components fail."
+        },
+        {
+          "path": "frontend/src/components/CanvasErrorFallback.tsx",
+          "operation": "create",
+          "description": "Create a dedicated fallback component that displays when 3D initialization fails. Include clear error messaging, a manual reload button, and optional diagnostic information (WebGL support, browser compatibility). Style consistently with the game theme using the existing CSS variables from frontend/src/index.css."
         }
       ]
     },
     {
-      "id": "REQ-7",
-      "summary": "Apply timeless ethereal aesthetic with muted colors, atmospheric lighting, and suspended time ambiance",
+      "id": "REQ-19",
+      "summary": "Implement retry logic that automatically attempts to reinitialize the game if the initial load fails, with a maximum of 3 retry attempts before showing a permanent error state",
       "acceptanceCriteria": [
-        "Visual style uses desaturated or muted color palette",
-        "Lighting creates atmospheric, dreamlike ambiance",
-        "Overall aesthetic feels timeless rather than contemporary",
-        "Consistent art direction applied to all 3D assets and UI elements"
+        "Game automatically retries initialization on failure",
+        "User is informed of retry attempts through loading screen message",
+        "After 3 failed attempts, a permanent error message displays with manual reload option"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/styles/game-theme.css",
+          "path": "frontend/src/hooks/useGameInitialization.ts",
           "operation": "create",
-          "description": "Create dedicated stylesheet for game visual theme. Define CSS custom properties for muted color palette (pale blues, grays, desaturated tones). Set font styles for HUD that feel timeless and ethereal. Apply semi-transparent overlays and subtle glows."
-        },
-        {
-          "path": "frontend/src/components/Arena.tsx",
-          "operation": "modify",
-          "description": "Apply muted material colors to all arena geometry (walls, floor, obstacles). Use desaturated textures and colors. Integrate the skybox texture at frontend/public/assets/generated/skybox.dim_2048x2048.png for atmospheric background."
+          "description": "Create a hook that manages game initialization with automatic retry logic. Track retry attempts (max 3), retry delays, and initialization state. Expose retry count and error state to parent components for UI updates."
         },
         {
           "path": "frontend/src/components/Game.tsx",
           "operation": "modify",
-          "description": "Configure scene lighting for atmospheric effect. Use ambient light with low intensity and fog effect to create dreamlike ambiance. Add subtle directional or point lights with muted colors (pale gold, soft blue) to enhance suspended-time feeling."
+          "description": "Integrate useGameInitialization hook to manage Canvas and Physics initialization with automatic retries. Update LoadingScreen to display current retry attempt number. After 3 failed attempts, transition to permanent error state and render CanvasErrorFallback component instead of retrying."
         },
         {
-          "path": "frontend/src/components/Enemy.tsx",
+          "path": "frontend/src/components/LoadingScreen.tsx",
           "operation": "modify",
-          "description": "Style enemy targets with muted, desaturated materials consistent with timeless aesthetic. Use subtle emissive properties for ethereal glow effect."
+          "description": "Extend LoadingScreen to accept and display retry attempt information when provided. Show messages like 'Initializing game... (Attempt 2 of 3)' to keep users informed during retry cycles."
+        }
+      ]
+    },
+    {
+      "id": "REQ-20",
+      "summary": "Ensure the ErrorBoundary component properly catches and displays errors from the Canvas, Physics provider, and all child 3D components with detailed error information",
+      "acceptanceCriteria": [
+        "ErrorBoundary catches all React Three Fiber rendering errors",
+        "Error display includes component stack and error message",
+        "Reload button in ErrorBoundary successfully clears error state and reinitializes"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/ErrorBoundary.tsx",
+          "operation": "modify",
+          "description": "Enhance ErrorBoundary to capture and display React Three Fiber and Cannon physics errors with full component stack traces. Add structured error information display showing error message, component stack, and timestamp. Ensure the reload mechanism properly clears all cached state and reinitializes the game from scratch."
         },
         {
-          "path": "frontend/src/components/HUD.tsx",
+          "path": "frontend/src/components/Game.tsx",
           "operation": "modify",
-          "description": "Import and apply game-theme.css styles to HUD elements. Ensure all UI components use the defined muted color palette and ethereal styling."
+          "description": "Add a key prop to the Canvas that changes when reinitializing after error, forcing a complete remount. Ensure error state is properly reset before retry attempts to allow ErrorBoundary to catch new errors on subsequent initialization attempts."
         }
       ]
     }

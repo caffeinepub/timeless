@@ -1,158 +1,102 @@
 {
   "kind": "build_request",
-  "title": "Create 3D first-person shooter game",
-  "projectName": "Timeless Shooter",
-  "priority": "normal",
+  "title": "Diagnose and fix load error preventing game initialization",
+  "projectName": "Timeless",
+  "priority": "high",
   "requirements": [
     {
-      "id": "REQ-1",
-      "text": "Implement a 3D first-person shooter game environment using React Three Fiber with controllable player movement (WASD keys for forward/backward/strafe, mouse for looking around)",
+      "id": "REQ-16",
+      "text": "Add detailed error tracking to capture and log the specific load error occurring on deployment, including stack traces, component mount failures, and any React Three Fiber or Physics initialization errors",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-1"
+          "msg-user-load-error"
         ],
         "quotes": [
-          "3d first person shooter timeless"
+          "THERE SEEMS TO BE A LOAD ERROR"
         ]
       },
       "acceptanceCriteria": [
-        "Player can move in all directions using WASD keys",
-        "Mouse controls camera rotation for looking around",
-        "Movement is smooth and responsive"
+        "Console logs clearly identify the source of the load error",
+        "Error messages include component names and lifecycle stage where failure occurs",
+        "Stack traces are preserved and logged for debugging"
       ]
     },
     {
-      "id": "REQ-2",
-      "text": "Add shooting mechanics with visual feedback including muzzle flash, projectile trajectories, and hit detection against targets",
+      "id": "REQ-17",
+      "text": "Verify that all required dependencies for React Three Fiber Canvas and Physics provider are properly loaded before attempting to render the 3D scene",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-1"
-        ],
-        "quotes": [
-          "3d first person shooter"
+          "msg-user-load-error"
         ]
       },
       "acceptanceCriteria": [
-        "Left mouse click fires weapon",
-        "Visible projectile or raycast effect when shooting",
-        "Muzzle flash animation appears on firing",
-        "Hits are detected on target objects"
+        "Canvas only renders after all Three.js dependencies are confirmed available",
+        "Physics provider initialization is validated before use",
+        "Loading screen displays until all critical dependencies are ready"
       ]
     },
     {
-      "id": "REQ-3",
-      "text": "Create a 3D game arena with obstacles, cover positions, and environmental geometry for tactical gameplay",
+      "id": "REQ-18",
+      "text": "Add fallback rendering logic that displays a meaningful error message to the user if the 3D canvas fails to initialize, rather than showing a blank screen",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-1"
-        ],
-        "quotes": [
-          "3d first person shooter"
+          "msg-user-load-error"
         ]
       },
       "acceptanceCriteria": [
-        "Arena contains walls, obstacles, and cover objects",
-        "Player collision prevents walking through solid objects",
-        "Environment provides tactical positioning opportunities"
+        "User sees a clear error message explaining the load failure",
+        "Error message includes actionable steps (e.g., 'Please refresh the page')",
+        "Fallback UI renders even when 3D initialization fails"
       ]
     },
     {
-      "id": "REQ-4",
-      "text": "Implement enemy targets or NPCs that can be destroyed when shot, with visual feedback for hits and destruction",
+      "id": "REQ-19",
+      "text": "Implement retry logic that automatically attempts to reinitialize the game if the initial load fails, with a maximum of 3 retry attempts before showing a permanent error state",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-1"
-        ],
-        "quotes": [
-          "3d first person shooter"
+          "msg-user-load-error"
         ]
       },
       "acceptanceCriteria": [
-        "Enemy targets are visible in the arena",
-        "Targets react visually when hit",
-        "Targets are removed or show destroyed state after sufficient damage"
+        "Game automatically retries initialization on failure",
+        "User is informed of retry attempts through loading screen message",
+        "After 3 failed attempts, a permanent error message displays with manual reload option"
       ]
     },
     {
-      "id": "REQ-5",
-      "text": "Add game state management tracking player health, ammunition count, score, and enemy defeats",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "msg-1"
-        ],
-        "quotes": [
-          "3d first person shooter"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Player health is tracked and displayed",
-        "Ammunition count decreases with each shot",
-        "Score increases when enemies are defeated",
-        "Game state persists across sessions via backend"
-      ]
-    },
-    {
-      "id": "REQ-6",
-      "text": "Display HUD elements showing crosshair, health bar, ammunition counter, and current score",
+      "id": "REQ-20",
+      "text": "Ensure the ErrorBoundary component properly catches and displays errors from the Canvas, Physics provider, and all child 3D components with detailed error information",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-1"
-        ],
-        "quotes": [
-          "3d first person shooter"
+          "msg-user-load-error"
         ]
       },
       "acceptanceCriteria": [
-        "Crosshair appears at screen center",
-        "Health bar shows current player health",
-        "Ammo counter displays remaining ammunition",
-        "Score is visible and updates in real-time"
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "text": "Apply a timeless, ethereal visual aesthetic with muted colors, atmospheric lighting, and a sense of suspended time to create a distinctive art style",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-1"
-        ],
-        "quotes": [
-          "timeless"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Visual style uses desaturated or muted color palette",
-        "Lighting creates atmospheric, dreamlike ambiance",
-        "Overall aesthetic feels timeless rather than contemporary",
-        "Consistent art direction applied to all 3D assets and UI elements"
+        "ErrorBoundary catches all React Three Fiber rendering errors",
+        "Error display includes component stack and error message",
+        "Reload button in ErrorBoundary successfully clears error state and reinitializes"
       ]
     }
   ],
   "constraints": [
-    "Must use React Three Fiber for all 3D rendering",
-    "All game logic must run client-side in the frontend",
-    "Backend should only handle persistent data storage (scores, player progress)"
+    "Do not modify Internet Identity authentication hooks (useInternetIdentity.ts, useInternetIdentity.tsx, useActor.ts)",
+    "Do not modify main.tsx entry point",
+    "Do not modify UI components in frontend/src/components/ui directory",
+    "Maintain single-actor architecture in backend"
   ],
   "nonGoals": [
-    "Multiplayer functionality",
-    "Advanced AI for enemy behavior",
-    "Weapon switching or inventory system",
-    "Level progression or multiple maps",
-    "Sound effects or music"
+    "Changing the core game mechanics or controls",
+    "Modifying the visual aesthetic or art style",
+    "Adding new gameplay features",
+    "Changing the backend state management structure"
   ],
   "imageRequirements": {
-    "required": [
-      "Ethereal muzzle flash effect with soft glow in muted gold tones (muzzle-flash.dim_256x256.png)",
-      "Atmospheric skybox texture with timeless, foggy environment in pale blue and gray (skybox.dim_2048x2048.png)",
-      "Crosshair overlay design with minimalist style in semi-transparent white (crosshair.dim_64x64.png)"
-    ],
+    "required": [],
     "edits": []
   }
 }

@@ -1,5 +1,6 @@
 import { useTexture } from '@react-three/drei';
 import { usePlane, useBox } from '@react-three/cannon';
+import { useEffect, useRef } from 'react';
 import type { Enemy } from '../hooks/useEnemies';
 import EnemyComponent from './Enemy';
 
@@ -9,6 +10,27 @@ interface ArenaProps {
 
 export default function Arena({ enemies }: ArenaProps) {
   const skyboxTexture = useTexture('/assets/generated/skybox.dim_2048x2048.png');
+  const isMountedRef = useRef(true);
+
+  useEffect(() => {
+    console.log('🏟️ Arena component mounted at', new Date().toISOString());
+    console.log('🖼️ Skybox texture loaded:', !!skyboxTexture);
+    console.log('👾 Rendering', enemies.length, 'enemies');
+    isMountedRef.current = true;
+
+    return () => {
+      console.log('🏟️ Arena component unmounting at', new Date().toISOString());
+      isMountedRef.current = false;
+      
+      // Dispose of texture
+      if (skyboxTexture) {
+        console.log('🧹 Disposing skybox texture');
+        skyboxTexture.dispose();
+      }
+      
+      console.log('✅ Arena component cleanup complete');
+    };
+  }, []);
 
   const [floorRef] = usePlane(() => ({
     rotation: [-Math.PI / 2, 0, 0],
@@ -31,31 +53,36 @@ export default function Arena({ enemies }: ArenaProps) {
     { position: [8, 1, -18], args: [2, 2, 2] },
   ];
 
-  return (
-    <>
-      <mesh ref={floorRef} receiveShadow>
-        <planeGeometry args={[50, 50]} />
-        <meshStandardMaterial color="#1a1a22" roughness={0.8} metalness={0.2} />
-      </mesh>
+  try {
+    return (
+      <>
+        <mesh ref={floorRef} receiveShadow>
+          <planeGeometry args={[50, 50]} />
+          <meshStandardMaterial color="#1a1a22" roughness={0.8} metalness={0.2} />
+        </mesh>
 
-      <mesh position={[0, 25, 0]}>
-        <sphereGeometry args={[40, 32, 32]} />
-        <meshBasicMaterial map={skyboxTexture} side={2} opacity={0.3} transparent />
-      </mesh>
+        <mesh position={[0, 25, 0]}>
+          <sphereGeometry args={[40, 32, 32]} />
+          <meshBasicMaterial map={skyboxTexture} side={2} opacity={0.3} transparent />
+        </mesh>
 
-      {walls.map((wall, i) => (
-        <Wall key={`wall-${i}`} {...wall} />
-      ))}
+        {walls.map((wall, i) => (
+          <Wall key={`wall-${i}`} {...wall} />
+        ))}
 
-      {obstacles.map((obstacle, i) => (
-        <Obstacle key={`obstacle-${i}`} {...obstacle} />
-      ))}
+        {obstacles.map((obstacle, i) => (
+          <Obstacle key={`obstacle-${i}`} {...obstacle} />
+        ))}
 
-      {enemies.map((enemy) => (
-        <EnemyComponent key={enemy.id} enemy={enemy} />
-      ))}
-    </>
-  );
+        {enemies.map((enemy) => (
+          <EnemyComponent key={enemy.id} enemy={enemy} />
+        ))}
+      </>
+    );
+  } catch (error) {
+    console.error('❌ Error rendering Arena:', error);
+    throw error;
+  }
 }
 
 function Wall({ position, args }: { position: [number, number, number]; args: [number, number, number] }) {

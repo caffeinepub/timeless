@@ -2,48 +2,8 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-implement-a-3d-first-person-shooter-game-environment-using-react-three-fiber-with-controllable-player-movement-wasd-keys-for-forward-backward-strafe-mouse-for-looking-around",
-      "featureTitle": "Implement a 3D first-person shooter game environment using React Three Fiber with controllable player movement (WASD keys for forward/backward/strafe, mouse for looking around)",
-      "files": [
-        "frontend/src/components/Game.tsx",
-        "frontend/src/components/Player.tsx",
-        "frontend/src/hooks/usePlayerControls.ts"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-1"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-shooting-mechanics-with-visual-feedback-including-muzzle-flash-projectile-trajectories-and-hit-detection-against-targets",
-      "featureTitle": "Add shooting mechanics with visual feedback including muzzle flash, projectile trajectories, and hit detection against targets",
-      "files": [
-        "frontend/src/components/MuzzleFlash.tsx",
-        "frontend/src/components/Player.tsx",
-        "frontend/src/hooks/useWeapon.ts"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-2"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-create-a-3d-game-arena-with-obstacles-cover-positions-and-environmental-geometry-for-tactical-gameplay",
-      "featureTitle": "Create a 3D game arena with obstacles, cover positions, and environmental geometry for tactical gameplay",
+      "featureId": "feature-add-detailed-error-tracking-to-capture-and-log-the-specific-load-error-occurring-on-deployment-including-stack-traces-component-mount-failures-and-any-react-three-fiber-or-physics-initialization-errors",
+      "featureTitle": "Add detailed error tracking to capture and log the specific load error occurring on deployment, including stack traces, component mount failures, and any React Three Fiber or Physics initialization errors",
       "files": [
         "frontend/src/components/Arena.tsx",
         "frontend/src/components/Game.tsx",
@@ -57,18 +17,16 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-3"
+        "REQ-16"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-implement-enemy-targets-or-npcs-that-can-be-destroyed-when-shot-with-visual-feedback-for-hits-and-destruction",
-      "featureTitle": "Implement enemy targets or NPCs that can be destroyed when shot, with visual feedback for hits and destruction",
+      "featureId": "feature-verify-that-all-required-dependencies-for-react-three-fiber-canvas-and-physics-provider-are-properly-loaded-before-attempting-to-render-the-3d-scene",
+      "featureTitle": "Verify that all required dependencies for React Three Fiber Canvas and Physics provider are properly loaded before attempting to render the 3D scene",
       "files": [
-        "frontend/src/components/Arena.tsx",
-        "frontend/src/components/Enemy.tsx",
         "frontend/src/components/Game.tsx",
-        "frontend/src/hooks/useEnemies.ts"
+        "frontend/src/hooks/useDependencyCheck.ts"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -78,17 +36,16 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-4"
+        "REQ-17"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-add-game-state-management-tracking-player-health-ammunition-count-score-and-enemy-defeats",
-      "featureTitle": "Add game state management tracking player health, ammunition count, score, and enemy defeats",
+      "featureId": "feature-add-fallback-rendering-logic-that-displays-a-meaningful-error-message-to-the-user-if-the-3d-canvas-fails-to-initialize-rather-than-showing-a-blank-screen",
+      "featureTitle": "Add fallback rendering logic that displays a meaningful error message to the user if the 3D canvas fails to initialize, rather than showing a blank screen",
       "files": [
-        "frontend/src/components/Game.tsx",
-        "frontend/src/hooks/useGameState.ts",
-        "frontend/src/hooks/useWeapon.ts"
+        "frontend/src/components/CanvasErrorFallback.tsx",
+        "frontend/src/components/Game.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -98,17 +55,17 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-5"
+        "REQ-18"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-display-hud-elements-showing-crosshair-health-bar-ammunition-counter-and-current-score",
-      "featureTitle": "Display HUD elements showing crosshair, health bar, ammunition counter, and current score",
+      "featureId": "feature-implement-retry-logic-that-automatically-attempts-to-reinitialize-the-game-if-the-initial-load-fails-with-a-maximum-of-3-retry-attempts-before-showing-a-permanent-error-state",
+      "featureTitle": "Implement retry logic that automatically attempts to reinitialize the game if the initial load fails, with a maximum of 3 retry attempts before showing a permanent error state",
       "files": [
         "frontend/src/components/Game.tsx",
-        "frontend/src/components/HUD.tsx",
-        "frontend/src/components/HealthBar.tsx"
+        "frontend/src/components/LoadingScreen.tsx",
+        "frontend/src/hooks/useGameInitialization.ts"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -118,19 +75,16 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-6"
+        "REQ-19"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-apply-a-timeless-ethereal-visual-aesthetic-with-muted-colors-atmospheric-lighting-and-a-sense-of-suspended-time-to-create-a-distinctive-art-style",
-      "featureTitle": "Apply a timeless, ethereal visual aesthetic with muted colors, atmospheric lighting, and a sense of suspended time to create a distinctive art style",
+      "featureId": "feature-ensure-the-errorboundary-component-properly-catches-and-displays-errors-from-the-canvas-physics-provider-and-all-child-3d-components-with-detailed-error-information",
+      "featureTitle": "Ensure the ErrorBoundary component properly catches and displays errors from the Canvas, Physics provider, and all child 3D components with detailed error information",
       "files": [
-        "frontend/src/components/Arena.tsx",
-        "frontend/src/components/Enemy.tsx",
-        "frontend/src/components/Game.tsx",
-        "frontend/src/components/HUD.tsx",
-        "frontend/src/styles/game-theme.css"
+        "frontend/src/components/ErrorBoundary.tsx",
+        "frontend/src/components/Game.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -140,7 +94,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-7"
+        "REQ-20"
       ],
       "confidence": "high"
     }

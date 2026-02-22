@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import { Vector3 } from 'three';
 
 export interface PlayerControls {
   forward: boolean;
@@ -21,9 +20,15 @@ export function usePlayerControls() {
   });
 
   const mouseMovement = useRef({ x: 0, y: 0 });
+  const isMountedRef = useRef(true);
 
   useEffect(() => {
+    console.log('⌨️ Player controls hook initialized at', new Date().toISOString());
+    isMountedRef.current = true;
+
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isMountedRef.current) return;
+      
       switch (e.code) {
         case 'KeyW':
           controls.current.forward = true;
@@ -44,6 +49,8 @@ export function usePlayerControls() {
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
+      if (!isMountedRef.current) return;
+      
       switch (e.code) {
         case 'KeyW':
           controls.current.forward = false;
@@ -64,18 +71,35 @@ export function usePlayerControls() {
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-      mouseMovement.current.x += e.movementX;
-      mouseMovement.current.y += e.movementY;
+      if (!isMountedRef.current) return;
+      mouseMovement.current.x = e.movementX || 0;
+      mouseMovement.current.y = e.movementY || 0;
     };
 
+    console.log('⌨️ Adding keyboard and mouse event listeners');
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
     window.addEventListener('mousemove', handleMouseMove);
 
     return () => {
+      console.log('⌨️ Removing keyboard and mouse event listeners at', new Date().toISOString());
+      isMountedRef.current = false;
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
       window.removeEventListener('mousemove', handleMouseMove);
+      
+      // Reset controls
+      controls.current = {
+        forward: false,
+        backward: false,
+        left: false,
+        right: false,
+        jump: false,
+        mouseMovement: { x: 0, y: 0 },
+      };
+      mouseMovement.current = { x: 0, y: 0 };
+      
+      console.log('✅ Player controls cleanup complete');
     };
   }, []);
 

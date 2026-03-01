@@ -1,108 +1,39 @@
 {
   "kind": "build_request",
-  "title": "Fix infinite loading loop + apply James Bond visual theme with Die Hard music",
-  "projectName": "Agent Strike",
-  "priority": "high",
+  "title": "Extend 007 loading animation duration on initial page load",
+  "projectName": "Agent 007",
+  "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Fix the game initialization loop that is stuck at 1 out of 3 attempts and 20% progress. The `useGameInitialization` hook must not loop indefinitely — ensure that all stage completion callbacks (canvas, physics, arena, player, enemies) fire reliably, that progress advances beyond 20%, and that the game reaches a fully loaded state within the 15-second timeout. If initialization fails after all retries, show the error fallback UI instead of spinning forever.",
+      "text": "Increase the duration of the Bond-style gun barrel (007) loading animation shown on the InitialLoadingScreen so that it remains visible for a noticeably longer period when the page first loads.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-recent"
+          "msg-6"
         ],
         "quotes": [
-          "still circulates and does not load",
-          "it loads 1out 3 for 20% and that is all",
-          "the attempt only stays on the first one and at 20% and never changes"
+          "when the page first loads can the load of the 007 last longer"
         ]
       },
       "acceptanceCriteria": [
-        "Progress bar advances past 20% and eventually reaches 100%",
-        "All 3 initialization stages complete in sequence",
-        "Game canvas renders and becomes interactive after loading",
-        "If all retries fail, the error fallback UI is shown instead of an infinite spinner",
-        "No infinite retry loops — maximum retry count is respected"
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "text": "Apply a James Bond / spy thriller visual theme throughout the UI. This includes: a sleek dark monochrome palette (black, charcoal, deep grey) with gold and champagne accents; elegant serif or thin-weight sans-serif typography reminiscent of classic Bond title cards; the HUD, loading screens, menus, and overlays should feel cinematic and refined — minimal, high-contrast, with subtle gold borders and shadow treatments. The crosshair should be styled as a gun-sight reticle. The initial loading screen should display a stylized title card in the Bond aesthetic.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-recent"
-        ],
-        "quotes": [
-          "I like a James bond look"
-        ]
-      },
-      "acceptanceCriteria": [
-        "UI uses a black/charcoal/gold color palette consistently across all screens",
-        "Typography is elegant and cinematic (thin sans-serif or serif)",
-        "HUD elements (health bar, ammo, score, music label) have gold accent styling",
-        "Loading screen displays a Bond-style title card treatment",
-        "Crosshair is styled as a gun-sight/target reticle",
-        "All UI components (buttons, overlays, error screens) follow the Bond aesthetic"
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "text": "Ensure the background music hook (`useBackgroundMusic.ts`) plays the Die Hard theme track prominently. The Die Hard synthesized track should be the default/primary track that plays on game start. The Bond track should remain available as an alternate. Music transitions between tracks based on gameplay state should still work. The mute button in the HUD should display the current track name clearly.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-recent"
-        ],
-        "quotes": [
-          "Die hard music/ theme"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Die Hard theme starts playing automatically when the game initializes audio",
-        "Track label in HUD correctly shows 'Die Hard' as the active track",
-        "Mute/unmute toggle works for both tracks",
-        "Gameplay-based track transitions still function correctly",
-        "No audio errors or silent failures on initialization"
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "text": "Update global CSS custom properties and the game-theme stylesheet (`frontend/src/index.css`, `frontend/src/styles/game-theme.css`, `frontend/tailwind.config.js`) to reflect the James Bond visual theme: replace existing color tokens with a black/charcoal/gold OKLCH palette. Ensure dark mode is the only mode and all UI inherits the spy-thriller aesthetic.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-recent"
-        ],
-        "quotes": [
-          "I like a James bond look"
-        ]
-      },
-      "acceptanceCriteria": [
-        "CSS custom properties use black, charcoal, and gold OKLCH values",
-        "Tailwind color tokens are updated to match the Bond palette",
-        "No blue, purple, or off-brand colors remain in the UI",
-        "All components inherit the updated theme without additional overrides"
+        "The gun barrel / 007 animation on InitialLoadingScreen plays for a longer duration before transitioning to the game.",
+        "The extended animation feels intentional and cinematic rather than a freeze or hang.",
+        "The rest of the loading sequence (progress bar, stage labels) still completes normally after the animation."
       ]
     }
   ],
   "constraints": [
-    "Do not edit files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui",
-    "Keep all Motoko logic in backend/main.mo — no backend schema changes required for this request",
-    "Do not remove the existing Bond or Die Hard synthesized audio tracks from useBackgroundMusic.ts — only change which plays by default"
+    "Do not alter files listed in frontend.immutablePaths.",
+    "Do not change any backend logic or data models."
   ],
   "nonGoals": [
-    "Adding real/external audio files — music remains procedurally synthesized via Web Audio API",
-    "Backend game logic changes",
-    "Adding new game mechanics or enemies",
-    "Internet Identity or authentication changes"
+    "Changing the visual design or style of the loading animation.",
+    "Modifying in-game loading overlays (LoadingScreen.tsx).",
+    "Adding new animation keyframes or assets."
   ],
   "imageRequirements": {
-    "required": [
-      "Circular gun-sight / sniper scope crosshair icon on transparent background, thin gold lines, dark style (crosshair-reticle.dim_64x64.png)",
-      "James Bond style title card background — black with gold circular gun-barrel tunnel vignette effect (bond-title-bg.dim_1920x1080.png)"
-    ],
+    "required": [],
     "edits": []
   }
 }

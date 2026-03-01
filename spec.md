@@ -1,12 +1,10 @@
 # Specification
 
 ## Summary
-**Goal:** Fix the infinite game initialization loop, apply a James Bond spy-thriller visual theme across all UI, and set the Die Hard theme as the default background music track.
+**Goal:** Extend the duration of the Bond-style gun barrel (007) loading animation on the InitialLoadingScreen so it feels more cinematic on initial page load.
 
 **Planned changes:**
-- Fix `useGameInitialization` hook so all stage callbacks (canvas, physics, arena, player, enemies) fire reliably, progress advances past 20% to 100%, retries are capped, and the error fallback UI is shown on failure instead of spinning forever
-- Apply a James Bond visual theme: black/charcoal/deep grey palette with gold/champagne accents, elegant cinematic typography, gold-accented HUD elements, Bond-style loading title card, and gun-sight styled crosshair
-- Update `index.css`, `game-theme.css`, and `tailwind.config.js` to use a black/charcoal/gold OKLCH color palette as the sole theme, removing any blue or off-brand colors
-- Set the Die Hard synthesized track as the default/primary music in `useBackgroundMusic.ts`; keep the Bond track as an alternate; display the active track name clearly in the HUD mute button
+- Increase the animation duration/timing of the gun barrel / 007 sequence in `InitialLoadingScreen` so it plays for a noticeably longer period before transitioning to the game.
+- Ensure the progress bar and stage labels still complete normally after the extended animation.
 
-**User-visible outcome:** The game loads fully without getting stuck at 20%, presents a sleek James Bond-inspired UI throughout, and starts playing the Die Hard theme automatically on game start.
+**User-visible outcome:** When the page first loads, the 007 gun barrel animation lingers longer, giving a more intentional, cinematic feel before the game begins.

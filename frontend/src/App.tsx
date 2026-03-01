@@ -7,7 +7,7 @@ const Game = lazy(() => import('./components/Game'));
 export default function App() {
   return (
     <ErrorBoundary>
-      <Suspense fallback={<InitialLoadingScreen progress={5} currentStage="canvas" />}>
+      <Suspense fallback={<InitialLoadingScreen progress={5} stage="INITIALIZING SYSTEMS" />}>
         <Game />
       </Suspense>
     </ErrorBoundary>

@@ -1,5 +1,5 @@
 {
-  "frontend/src/App.tsx": "Root app component with ErrorBoundary, Suspense, and lazy-loaded Game component with Bond-styled initial loading fallback.",
+  "frontend/src/App.tsx": "Root app component with ErrorBoundary, Suspense, and lazy-loaded Game component, passing the correct `stage` prop (renamed from `currentStage`) to the Bond-styled InitialLoadingScreen fallback.",
   "frontend/src/hooks/useQueries.ts": "React Query hooks for backend integration including game state management, damage, enemy defeats, and score tracking.",
   "frontend/src/hooks/usePlayerControls.ts": "Custom hook managing WASD keyboard input and mouse movement with proper cleanup of all event listeners, control state reset on unmount, and mounted state tracking.",
   "frontend/src/hooks/useWeapon.ts": "Custom hook handling weapon firing mechanics with proper timer cleanup, mounted state tracking to prevent stale updates, and state reset on unmount.",
@@ -12,7 +12,7 @@
   "frontend/src/components/MuzzleFlash.tsx": "Animated muzzle flash effect using generated texture with additive blending and fade-out animation.",
   "frontend/src/components/HUD.tsx": "Heads-up display with Bond/Die Hard gold styling, crosshair reticle image, score panel, health bar with color-coded fill, ammo pips, and music track label with mute toggle.",
   "frontend/src/components/HealthBar.tsx": "Visual health bar component displaying current health as a percentage with gradient fill.",
-  "frontend/src/styles/game-theme.css": "Complete James Bond / Die Hard game theme CSS with black/charcoal/gold palette, gun barrel animations, HUD panel styles, loading card styles, error card styles, button variants, and health/ammo indicators.",
+  "frontend/src/styles/game-theme.css": "Complete James Bond / Die Hard game theme CSS with black/charcoal/gold palette, gun barrel animations slowed to 10s (outer ring) and 14s (inner ring) for a cinematic feel, HUD panel styles, loading card styles, error card styles, button variants, and health/ammo indicators.",
   "frontend/src/index.css": "Global styles with OKLCH black/charcoal/gold color system for the Bond theme, Cormorant Garamond font import, and dark-mode-first design tokens.",
   "frontend/tailwind.config.js": "Tailwind config with Bond palette tokens, Cormorant Garamond serif font, zero border-radius for sharp cinematic edges, and gold shadow utilities.",
   "frontend/src/components/ErrorBoundary.tsx": "React error boundary with Bond aesthetic, expandable stack trace, pointer lock release on error, and gold-styled reset button.",
@@ -20,7 +20,7 @@
   "frontend/src/hooks/useDependencyCheck.ts": "Dependency validation hook with 10-second timeout handling for each dependency check (WebGL, Three.js, React Three Fiber, Cannon physics) using Promise.race pattern.",
   "frontend/src/hooks/useGameInitialization.ts": "Simplified game initialization hook with 5 sequential stages (canvas, physics, arena, player, enemies), per-stage timeouts, a maximum of 2 retries, and proper error state that prevents infinite loops.",
   "frontend/src/components/CanvasErrorFallback.tsx": "Bond-themed canvas error fallback with gold accent lines, diagnostic causes list, and gold/outline action buttons.",
-  "frontend/src/components/InitialLoadingScreen.tsx": "Bond-style initial loading screen with gun barrel animation, title card treatment using the generated background image, gold progress bar, and stage labels.",
+  "frontend/src/components/InitialLoadingScreen.tsx": "Bond-style initial loading screen with a 4.5-second minimum display duration enforced via throttled progress animation, slow gun barrel rings, 007 title card with background image, gold progress bar, stage dots, and classification footer.",
   "frontend/src/hooks/usePerformanceMonitor.ts": "Custom hook monitoring FPS, frame time, and memory usage in development mode using requestAnimationFrame and performance.memory API with exportable performance data, fixed to provide initial value for rafIdRef.",
   "frontend/src/components/PerformanceOverlay.tsx": "Development-only performance overlay displaying real-time FPS counter, frame time, and memory statistics in top-right corner using usePerformanceMonitor hook.",
   "frontend/src/hooks/useBackgroundMusic.ts": "Procedural Web Audio API music hook with Die Hard (Ode to Joy-inspired) as the default track and Bond theme as alternate, smooth gain transitions, mute toggle, and deferred initialization on user gesture."

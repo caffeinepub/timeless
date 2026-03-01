@@ -1,127 +1,21 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Fix infinite loading loop + apply James Bond visual theme with Die Hard music",
+  "title": "Extend 007 loading animation duration on initial page load",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Fix the game initialization loop that prevents the game from loading past 20% progress and 1 out of 3 attempts",
+      "summary": "Increase the duration of the Bond-style gun barrel (007) loading animation shown on the InitialLoadingScreen so that it remains visible for a noticeably longer period when the page first loads.",
       "acceptanceCriteria": [
-        "Progress bar advances past 20% and eventually reaches 100%",
-        "All 3 initialization stages complete in sequence",
-        "Game canvas renders and becomes interactive after loading",
-        "If all retries fail, the error fallback UI is shown instead of an infinite spinner",
-        "No infinite retry loops — maximum retry count is respected"
+        "The gun barrel / 007 animation on InitialLoadingScreen plays for a longer duration before transitioning to the game.",
+        "The extended animation feels intentional and cinematic rather than a freeze or hang.",
+        "The rest of the loading sequence (progress bar, stage labels) still completes normally after the animation."
       ],
       "file_operations": [
-        {
-          "path": "frontend/src/hooks/useGameInitialization.ts",
-          "operation": "modify",
-          "description": "Fix the initialization stage progression logic to ensure all stage completion callbacks (canvas, physics, arena, player, enemies) fire reliably and advance progress beyond 20%. Ensure the retry mechanism respects the maximum retry count and does not loop indefinitely. Add defensive checks to prevent stages from getting stuck. Ensure that if initialization fails after all retries, the error state is properly set so the fallback UI is displayed instead of an infinite spinner."
-        },
-        {
-          "path": "frontend/src/components/Game.tsx",
-          "operation": "modify",
-          "description": "Review and fix the stage completion callback wiring to ensure all five initialization stages (canvas, physics, arena, player, enemies) properly invoke their respective callbacks from useGameInitialization. Add error handling to catch any stage failures early and trigger fallback behavior. Ensure the loading screen transitions to the game canvas once all stages complete, and that the error fallback UI is rendered when initialization fails after all retries."
-        },
         {
           "path": "frontend/src/components/InitialLoadingScreen.tsx",
           "operation": "modify",
-          "description": "Ensure the loading screen correctly displays the current stage text and progress percentage from useGameInitialization. Add logic to display the error fallback UI when the initialization hook reports failure after all retries, preventing the spinner from running indefinitely."
-        }
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "summary": "Apply a James Bond / spy thriller visual theme throughout the UI with a sleek dark monochrome palette, gold accents, elegant typography, and cinematic styling",
-      "acceptanceCriteria": [
-        "UI uses a black/charcoal/gold color palette consistently across all screens",
-        "Typography is elegant and cinematic (thin sans-serif or serif)",
-        "HUD elements (health bar, ammo, score, music label) have gold accent styling",
-        "Loading screen displays a Bond-style title card treatment",
-        "Crosshair is styled as a gun-sight/target reticle",
-        "All UI components (buttons, overlays, error screens) follow the Bond aesthetic"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/HUD.tsx",
-          "operation": "modify",
-          "description": "Apply the James Bond visual theme to all HUD elements: use gold accents for the health bar, ammo counter, score display, and music label. Update typography to be elegant and cinematic (thin sans-serif). Wire in the generated crosshair reticle image at frontend/public/assets/generated/crosshair-reticle.dim_64x64.png to replace the current crosshair styling. Ensure all HUD components use the black/charcoal/gold palette from the updated CSS custom properties."
-        },
-        {
-          "path": "frontend/src/components/InitialLoadingScreen.tsx",
-          "operation": "modify",
-          "description": "Redesign the initial loading screen to display a Bond-style title card treatment. Wire in the generated title card background image at frontend/public/assets/generated/bond-title-bg.dim_1920x1080.png as the background. Use elegant serif or thin sans-serif typography for the title. Apply gold accents to the spinner and progress bar. Ensure the layout is cinematic and minimal, following the Bond aesthetic."
-        },
-        {
-          "path": "frontend/src/components/LoadingScreen.tsx",
-          "operation": "modify",
-          "description": "Update the in-game loading overlay to follow the James Bond visual theme: use the black/charcoal/gold palette, elegant typography, and minimal high-contrast styling with subtle gold borders and shadow treatments. Ensure the spinner, status message, and progress bar all use gold accents."
-        },
-        {
-          "path": "frontend/src/components/CanvasErrorFallback.tsx",
-          "operation": "modify",
-          "description": "Apply the Bond aesthetic to the error fallback UI: use the black/charcoal/gold color palette, elegant typography, and cinematic styling for the error message, causes list, and action buttons. Ensure the buttons have gold borders and minimal, refined styling."
-        },
-        {
-          "path": "frontend/src/components/ErrorBoundary.tsx",
-          "operation": "modify",
-          "description": "Update the ErrorBoundary fallback UI to follow the James Bond visual theme: use the black/charcoal/gold palette, elegant serif or thin sans-serif typography, and minimal, high-contrast styling for the error details and reset button. Ensure the button has gold accent borders."
-        },
-        {
-          "path": "frontend/src/styles/game-theme.css",
-          "operation": "modify",
-          "description": "Redesign all game-specific UI classes (cards, buttons, HUD elements, health bar, crosshair, ammo counter, music control) to follow the James Bond visual theme. Replace existing colors with black, charcoal, and gold OKLCH values. Add elegant typography rules (thin sans-serif or serif). Apply subtle gold borders, shadow treatments, and high-contrast minimal styling to all UI components. Ensure the crosshair class references the generated gun-sight reticle. Update backdrop blur effects to be more cinematic."
-        }
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "summary": "Ensure the Die Hard theme track plays prominently as the default music, with the Bond track as an alternate, and the HUD displays the current track name clearly",
-      "acceptanceCriteria": [
-        "Die Hard theme starts playing automatically when the game initializes audio",
-        "Track label in HUD correctly shows 'Die Hard' as the active track",
-        "Mute/unmute toggle works for both tracks",
-        "Gameplay-based track transitions still function correctly",
-        "No audio errors or silent failures on initialization"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/hooks/useBackgroundMusic.ts",
-          "operation": "modify",
-          "description": "Change the default track from 'bond' to 'diehard' so that the Die Hard theme plays automatically on game start. Ensure the track label is properly exposed and displays 'Die Hard' when active. Verify that both tracks remain available and that track transitions based on gameplay state still function correctly. Do not remove either the Bond or Die Hard synthesized audio tracks."
-        },
-        {
-          "path": "frontend/src/components/HUD.tsx",
-          "operation": "modify",
-          "description": "Ensure the music label in the HUD clearly displays the current track name ('Die Hard' or 'Bond') from the useBackgroundMusic hook. Apply gold accent styling to the track label as part of the Bond visual theme. Verify that the mute/unmute toggle button works correctly for both tracks."
-        },
-        {
-          "path": "frontend/src/components/Game.tsx",
-          "operation": "modify",
-          "description": "Verify that the useBackgroundMusic hook is properly integrated and that the Die Hard track starts playing automatically when the game initializes audio. Ensure that track transitions based on gameplay state (e.g., enemy encounters, score milestones) still work correctly. Add error handling to catch any audio initialization failures and log them without breaking the game."
-        }
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "summary": "Update global CSS custom properties and Tailwind config to reflect the James Bond visual theme with a black/charcoal/gold OKLCH palette",
-      "acceptanceCriteria": [
-        "CSS custom properties use black, charcoal, and gold OKLCH values",
-        "Tailwind color tokens are updated to match the Bond palette",
-        "No blue, purple, or off-brand colors remain in the UI",
-        "All components inherit the updated theme without additional overrides"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/index.css",
-          "operation": "modify",
-          "description": "Replace all existing color custom properties with a black/charcoal/gold OKLCH palette suitable for the James Bond visual theme. Ensure dark mode is the only mode by setting the same values for both :root and .dark selectors. Remove any blue, purple, or off-brand colors. Update background, foreground, primary, secondary, accent, muted, and border colors to use black (oklch(0.15 0 0)), charcoal (oklch(0.25 0 0)), deep grey (oklch(0.35 0 0)), gold (oklch(0.75 0.15 85)), and champagne (oklch(0.85 0.1 85)) tones."
-        },
-        {
-          "path": "frontend/tailwind.config.js",
-          "operation": "modify",
-          "description": "Update all Tailwind color tokens to match the Bond palette from the updated CSS custom properties. Ensure the theme.extend.colors section references the new black/charcoal/gold OKLCH custom properties. Remove any blue, purple, or off-brand color definitions. Verify that all semantic tokens (background, foreground, primary, secondary, accent, muted, border, input, ring, destructive) are properly mapped to the new palette."
+          "description": "Extend the duration of the gun barrel animation by increasing the animation timing or adding a delay before the component signals completion. Ensure the animation plays through its full cycle and holds for a cinematic pause before transitioning. Verify that progress bar and stage labels still update correctly and that the extended duration does not block the rest of the initialization sequence."
         }
       ]
     }

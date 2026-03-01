@@ -1,0 +1,487 @@
+/* ============================================================
+   OPERATION: NAKATOMI — James Bond / Die Hard Game Theme
+   ============================================================ */
+
+:root {
+  --gold: oklch(0.75 0.15 85);
+  --gold-bright: oklch(0.85 0.18 85);
+  --gold-dim: oklch(0.55 0.1 85);
+  --charcoal: oklch(0.22 0 0);
+  --charcoal-light: oklch(0.30 0 0);
+  --black: oklch(0.10 0 0);
+  --white-dim: oklch(0.85 0 0);
+  --red-alert: oklch(0.55 0.22 25);
+}
+
+/* ============================================================
+   START SCREEN
+   ============================================================ */
+.bond-start-screen {
+  background: radial-gradient(ellipse at center, oklch(0.18 0 0) 0%, oklch(0.08 0 0) 100%);
+  font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+}
+
+.bond-title-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 3rem 4rem;
+  border: 1px solid var(--gold-dim);
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  position: relative;
+  max-width: 480px;
+  width: 90%;
+}
+
+.bond-title-card::before,
+.bond-title-card::after {
+  content: '';
+  position: absolute;
+  left: 1.5rem;
+  right: 1.5rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.bond-title-card::before { top: 0.75rem; }
+.bond-title-card::after { bottom: 0.75rem; }
+
+.bond-gun-barrel {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  position: relative;
+  box-shadow: 0 0 20px oklch(0.75 0.15 85 / 0.4), inset 0 0 20px oklch(0.10 0 0 / 0.8);
+}
+.bond-gun-barrel::after {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, oklch(0.10 0 0) 60%, oklch(0.20 0 0) 100%);
+  border: 1px solid var(--gold-dim);
+}
+
+.bond-title {
+  font-size: 1.5rem;
+  font-weight: 300;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  text-transform: uppercase;
+  text-align: center;
+  text-shadow: 0 0 20px oklch(0.75 0.15 85 / 0.5);
+}
+
+.bond-subtitle {
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  color: var(--white-dim);
+  opacity: 0.6;
+  text-transform: uppercase;
+}
+
+.bond-start-btn {
+  padding: 0.75rem 2.5rem;
+  border: 1px solid var(--gold);
+  background: transparent;
+  color: var(--gold);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.bond-start-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+  z-index: -1;
+}
+.bond-start-btn:hover {
+  color: var(--black);
+  box-shadow: 0 0 20px oklch(0.75 0.15 85 / 0.4);
+}
+.bond-start-btn:hover::before {
+  transform: scaleX(1);
+}
+
+.bond-hint {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--white-dim);
+  opacity: 0.4;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* ============================================================
+   LOADING SCREEN — INITIAL
+   ============================================================ */
+.bond-barrel-ring {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid var(--gold-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: bond-rotate 4s linear infinite;
+  box-shadow: 0 0 30px oklch(0.75 0.15 85 / 0.3);
+}
+.bond-barrel-inner {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(circle, oklch(0.10 0 0) 50%, oklch(0.20 0 0) 100%);
+  border: 1px solid var(--gold);
+}
+
+.bond-barrel-ring-sm {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--gold-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: bond-rotate 3s linear infinite;
+}
+.bond-barrel-inner-sm {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle, oklch(0.10 0 0) 50%, oklch(0.20 0 0) 100%);
+  border: 1px solid var(--gold-dim);
+}
+
+@keyframes bond-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.bond-loading-title {
+  font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  text-transform: uppercase;
+  text-shadow: 0 0 30px oklch(0.75 0.15 85 / 0.6);
+}
+
+.bond-loading-subtitle {
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  color: var(--white-dim);
+  opacity: 0.5;
+  text-transform: uppercase;
+  margin-top: 0.25rem;
+}
+
+.bond-loading-stage {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+}
+
+.bond-progress-container {
+  width: 280px;
+  height: 2px;
+  background: oklch(0.25 0 0);
+  position: relative;
+  overflow: hidden;
+}
+.bond-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright));
+  box-shadow: 0 0 8px var(--gold);
+  transition: width 0.4s ease;
+}
+
+.bond-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: bond-pulse 1s ease-in-out infinite;
+}
+@keyframes bond-pulse {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* ============================================================
+   LOADING CARD (in-game overlay)
+   ============================================================ */
+.bond-loading-card {
+  background: oklch(0.12 0 0);
+  border: 1px solid var(--gold-dim);
+  min-width: 320px;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 0 40px oklch(0.75 0.15 85 / 0.15), 0 20px 60px rgba(0,0,0,0.8);
+}
+
+.bond-card-accent-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.bond-card-title {
+  font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 300;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.bond-card-stage {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--white-dim);
+  opacity: 0.6;
+  text-transform: uppercase;
+  margin-top: 0.25rem;
+}
+
+.bond-progress-pct {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--gold-dim);
+}
+
+.bond-retry-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--white-dim);
+  opacity: 0.4;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   ERROR UI
+   ============================================================ */
+.bond-error-card {
+  background: oklch(0.12 0 0);
+  border: 1px solid var(--gold-dim);
+  max-width: 480px;
+  width: 90%;
+  box-shadow: 0 0 40px oklch(0.75 0.15 85 / 0.1), 0 20px 60px rgba(0,0,0,0.9);
+}
+
+.bond-error-icon {
+  font-size: 2rem;
+  color: var(--red-alert);
+}
+
+.bond-error-icon-lg {
+  font-size: 3rem;
+  color: var(--gold-dim);
+  line-height: 1;
+}
+
+.bond-error-title {
+  font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 300;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.bond-error-subtitle {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--white-dim);
+  opacity: 0.5;
+  text-transform: uppercase;
+  margin-top: 0.25rem;
+}
+
+.bond-error-details {
+  background: oklch(0.08 0 0);
+  border: 1px solid oklch(0.25 0 0);
+  padding: 0.75rem 1rem;
+  width: 100%;
+}
+
+.bond-error-msg {
+  font-size: 0.7rem;
+  color: var(--white-dim);
+  opacity: 0.7;
+  font-family: 'Courier New', monospace;
+  word-break: break-word;
+}
+
+.bond-error-causes {
+  width: 100%;
+  background: oklch(0.08 0 0);
+  border: 1px solid oklch(0.20 0 0);
+  padding: 0.75rem 1rem;
+}
+
+.bond-cause-item {
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--white-dim);
+  opacity: 0.6;
+  text-transform: uppercase;
+}
+
+.bond-cause-bullet {
+  color: var(--gold);
+  margin-right: 0.5rem;
+}
+
+.bond-error-stack {
+  font-size: 0.6rem;
+  color: var(--white-dim);
+  opacity: 0.4;
+  font-family: 'Courier New', monospace;
+  overflow: auto;
+  max-height: 120px;
+  background: oklch(0.08 0 0);
+  padding: 0.5rem;
+  border: 1px solid oklch(0.20 0 0);
+  width: 100%;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.bond-btn-gold {
+  padding: 0.6rem 2rem;
+  border: 1px solid var(--gold);
+  background: transparent;
+  color: var(--gold);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: inherit;
+}
+.bond-btn-gold:hover {
+  background: var(--gold);
+  color: var(--black);
+  box-shadow: 0 0 15px oklch(0.75 0.15 85 / 0.4);
+}
+
+.bond-btn-outline {
+  padding: 0.6rem 2rem;
+  border: 1px solid oklch(0.35 0 0);
+  background: transparent;
+  color: var(--white-dim);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: inherit;
+  opacity: 0.7;
+}
+.bond-btn-outline:hover {
+  border-color: var(--gold-dim);
+  color: var(--gold-dim);
+  opacity: 1;
+}
+
+/* ============================================================
+   HUD ELEMENTS
+   ============================================================ */
+.bond-hud-panel {
+  background: oklch(0.10 0 0 / 0.85);
+  border: 1px solid var(--gold-dim);
+  padding: 0.5rem 0.75rem;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 0 10px oklch(0.75 0.15 85 / 0.1);
+}
+
+.bond-hud-label {
+  font-size: 0.55rem;
+  letter-spacing: 0.25em;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+  font-family: 'Courier New', monospace;
+}
+
+.bond-hud-value {
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: var(--gold);
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+}
+
+.bond-hud-track {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+}
+
+.bond-mute-btn {
+  background: transparent;
+  border: 1px solid var(--gold-dim);
+  color: var(--gold);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  pointer-events: auto;
+}
+.bond-mute-btn:hover {
+  background: var(--gold-dim);
+  color: var(--black);
+}
+
+.bond-health-bar-bg {
+  width: 120px;
+  height: 4px;
+  background: oklch(0.20 0 0);
+  overflow: hidden;
+}
+.bond-health-bar-fill {
+  height: 100%;
+  transition: width 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0 0 6px currentColor;
+}
+
+.bond-ammo-pip {
+  width: 4px;
+  height: 10px;
+  background: var(--gold);
+  opacity: 0.8;
+}
+
+/* ============================================================
+   CROSSHAIR
+   ============================================================ */
+.bond-crosshair {
+  width: 48px;
+  height: 48px;
+  background-image: url('/assets/generated/crosshair-reticle.dim_64x64.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: drop-shadow(0 0 4px var(--gold));
+}

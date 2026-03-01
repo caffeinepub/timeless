@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Project with loading/progress issues being debugged. User wants a James Bond visual look with Die Hard music/theme.",
+  "architectural_notes": [],
+  "known_issues": [
+    "App circulates/spins and does not load — stuck at 1/3 attempts, 20% progress",
+    "Canvas latency issue reported"
+  ],
+  "isFixRequest": true,
+  "imageRequirements": "## Required Images\n- Circular gun-sight / sniper scope crosshair icon on transparent background, thin gold lines, dark style (crosshair-reticle.dim_64x64.png)\n- James Bond style title card background — black with gold circular gun-barrel tunnel vignette effect (bond-title-bg.dim_1920x1080.png)",
+  "existing_features": [
+    {
+      "id": "feature-fix-the-game-initialization-loop-that-is-stuck-at-1-out-of-3-attempts-and-20-progress-the-usegameinitialization-hook-must-not-loop-indefinitely-ensure-that-all-stage-completion-callbacks-canvas-physics-arena-player-enemies-fire-reliably-that-progress-advances-beyond-20-and-that-the-game-reaches-a-fully-loaded-state-within-the-15-second-timeout-if-initialization-fails-after-all-retries-show-the-error-fallback-ui-instead-of-spinning-forever",
+      "title": "Fix the game initialization loop that is stuck at 1 out of 3 attempts and 20% progress. The `useGameInitialization` hook must not loop indefinitely — ensure that all stage completion callbacks (canvas, physics, arena, player, enemies) fire reliably, that progress advances beyond 20%, and that the game reaches a fully loaded state within the 15-second timeout. If initialization fails after all retries, show the error fallback UI instead of spinning forever.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-james-bond-spy-thriller-visual-theme-throughout-the-ui-this-includes-a-sleek-dark-monochrome-palette-black-charcoal-deep-grey-with-gold-and-champagne-accents-elegant-serif-or-thin-weight-sans-serif-typography-reminiscent-of-classic-bond-title-cards-the-hud-loading-screens-menus-and-overlays-should-feel-cinematic-and-refined-minimal-high-contrast-with-subtle-gold-borders-and-shadow-treatments-the-crosshair-should-be-styled-as-a-gun-sight-reticle-the-initial-loading-screen-should-display-a-stylized-title-card-in-the-bond-aesthetic",
+      "title": "Apply a James Bond / spy thriller visual theme throughout the UI. This includes: a sleek dark monochrome palette (black, charcoal, deep grey) with gold and champagne accents; elegant serif or thin-weight sans-serif typography reminiscent of classic Bond title cards; the HUD, loading screens, menus, and overlays should feel cinematic and refined — minimal, high-contrast, with subtle gold borders and shadow treatments. The crosshair should be styled as a gun-sight reticle. The initial loading screen should display a stylized title card in the Bond aesthetic.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-background-music-hook-usebackgroundmusic-ts-plays-the-die-hard-theme-track-prominently-the-die-hard-synthesized-track-should-be-the-default-primary-track-that-plays-on-game-start-the-bond-track-should-remain-available-as-an-alternate-music-transitions-between-tracks-based-on-gameplay-state-should-still-work-the-mute-button-in-the-hud-should-display-the-current-track-name-clearly",
+      "title": "Ensure the background music hook (`useBackgroundMusic.ts`) plays the Die Hard theme track prominently. The Die Hard synthesized track should be the default/primary track that plays on game start. The Bond track should remain available as an alternate. Music transitions between tracks based on gameplay state should still work. The mute button in the HUD should display the current track name clearly.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-global-css-custom-properties-and-the-game-theme-stylesheet-frontend-src-index-css-frontend-src-styles-game-theme-css-frontend-tailwind-config-js-to-reflect-the-james-bond-visual-theme-replace-existing-color-tokens-with-a-black-charcoal-gold-oklch-palette-ensure-dark-mode-is-the-only-mode-and-all-ui-inherits-the-spy-thriller-aesthetic",
+      "title": "Update global CSS custom properties and the game-theme stylesheet (`frontend/src/index.css`, `frontend/src/styles/game-theme.css`, `frontend/tailwind.config.js`) to reflect the James Bond visual theme: replace existing color tokens with a black/charcoal/gold OKLCH palette. Ensure dark mode is the only mode and all UI inherits the spy-thriller aesthetic.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "James Bond visual theme/look",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Die Hard music and theme",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "projectName": "Agent Strike",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

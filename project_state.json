@@ -1,16 +1,16 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "A web project with a James Bond (007) aesthetic and Die Hard-inspired music theme. Currently on Version 8.",
+  "summary": "007-themed game project with an intro sequence, mission page, and start screen. User is iterating on the opening load sequence and UI controls.",
   "architectural_notes": [],
   "known_issues": [],
   "isFixRequest": false,
   "existing_features": [
     {
-      "id": "feature-increase-the-duration-of-the-bond-style-gun-barrel-007-loading-animation-shown-on-the-initialloadingscreen-so-that-it-remains-visible-for-a-noticeably-longer-period-when-the-page-first-loads",
-      "title": "Increase the duration of the Bond-style gun barrel (007) loading animation shown on the InitialLoadingScreen so that it remains visible for a noticeably longer period when the page first loads.",
+      "id": "feature-add-a-controls-reference-panel-to-the-start-mission-screen-that-displays-the-game-controls-wasd-movement-mouse-aim-shoot-space-to-jump-or-interact-and-any-other-relevant-keybindings-so-players-can-see-them-before-starting-the-game",
+      "title": "Add a controls reference panel to the start/mission screen that displays the game controls (WASD movement, mouse aim/shoot, Space to jump or interact, and any other relevant keybindings) so players can see them before starting the game.",
       "reqIds": [
-        "REQ-1"
+        "REQ-2"
       ],
       "version": 1
     }
@@ -18,13 +18,27 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Extend the duration of the 007 loading animation on initial page load",
+      "summary": "Revert to original opening load sequence",
       "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Add controls display to start screen",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Revert the InitialLoadingScreen component to the original Bond-themed gun barrel loading animation and intro sequence, removing any extended duration changes introduced in recent versions. Restore the original minimum display time, animation timing, and visual elements.",
+      "reqIds": [
+        "REQ-1"
+      ],
       "status": "pending"
     }
   ],
-  "gameProjectType": "none",
-  "projectName": "Agent 007",
+  "gameProjectType": "2d",
+  "projectName": "Operation Timeless",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

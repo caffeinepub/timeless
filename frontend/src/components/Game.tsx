@@ -11,6 +11,7 @@ import { useGameState } from '../hooks/useGameState';
 import { useEnemies } from '../hooks/useEnemies';
 import { useGameInitialization } from '../hooks/useGameInitialization';
 import { useBackgroundMusic } from '../hooks/useBackgroundMusic';
+import '../styles/game-theme.css';
 
 function PhysicsScene({
   onPhysicsReady,
@@ -56,6 +57,135 @@ function PhysicsScene({
         onSpawned={onPlayerReady}
       />
     </Physics>
+  );
+}
+
+const CONTROLS = [
+  { keys: ['W', 'A', 'S', 'D'], label: 'Move Forward / Left / Back / Right' },
+  { keys: ['MOUSE'], label: 'Aim & Look Around' },
+  { keys: ['CLICK'], label: 'Fire Weapon' },
+  { keys: ['SPACE'], label: 'Jump' },
+  { keys: ['ESC'], label: 'Release Mouse Cursor' },
+];
+
+function ControlsPanel() {
+  return (
+    <div
+      style={{
+        background: 'oklch(0.06 0.01 85 / 0.92)',
+        border: '1px solid oklch(0.78 0.18 85 / 0.25)',
+        boxShadow: '0 0 30px oklch(0 0 0 / 0.6), inset 0 1px 0 oklch(0.78 0.18 85 / 0.08)',
+        padding: '1.25rem 1.5rem',
+        minWidth: 320,
+        maxWidth: 420,
+        width: '100%',
+      }}
+    >
+      {/* Header */}
+      <div
+        style={{
+          borderBottom: '1px solid oklch(0.78 0.18 85 / 0.2)',
+          paddingBottom: '0.6rem',
+          marginBottom: '0.9rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+        }}
+      >
+        <div
+          style={{
+            width: 3,
+            height: 14,
+            background: 'oklch(0.78 0.18 85)',
+            boxShadow: '0 0 8px oklch(0.78 0.18 85 / 0.7)',
+          }}
+        />
+        <span
+          style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: '0.65rem',
+            letterSpacing: '0.3em',
+            textTransform: 'uppercase',
+            color: 'oklch(0.78 0.18 85 / 0.8)',
+          }}
+        >
+          OPERATIVE CONTROLS
+        </span>
+      </div>
+
+      {/* Control rows */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
+        {CONTROLS.map(({ keys, label }) => (
+          <div
+            key={label}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '1rem',
+            }}
+          >
+            {/* Key badges */}
+            <div style={{ display: 'flex', gap: '0.3rem', flexShrink: 0 }}>
+              {keys.map((k) => (
+                <span
+                  key={k}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minWidth: k.length > 3 ? 'auto' : 28,
+                    height: 22,
+                    padding: k.length > 3 ? '0 8px' : '0 4px',
+                    background: 'oklch(0.12 0.02 85)',
+                    border: '1px solid oklch(0.78 0.18 85 / 0.45)',
+                    boxShadow: '0 2px 0 oklch(0.78 0.18 85 / 0.2), inset 0 1px 0 oklch(0.78 0.18 85 / 0.1)',
+                    fontFamily: "'Cormorant Garamond', serif",
+                    fontSize: '0.65rem',
+                    fontWeight: 700,
+                    letterSpacing: '0.05em',
+                    color: 'oklch(0.78 0.18 85)',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {k}
+                </span>
+              ))}
+            </div>
+            {/* Label */}
+            <span
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: '0.72rem',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: 'oklch(0.65 0.05 85 / 0.85)',
+                textAlign: 'right',
+              }}
+            >
+              {label}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {/* Tip */}
+      <div
+        style={{
+          marginTop: '0.9rem',
+          paddingTop: '0.6rem',
+          borderTop: '1px solid oklch(0.78 0.18 85 / 0.12)',
+          fontFamily: "'Cormorant Garamond', serif",
+          fontSize: '0.6rem',
+          letterSpacing: '0.2em',
+          textTransform: 'uppercase',
+          color: 'oklch(0.78 0.18 85 / 0.35)',
+          textAlign: 'center',
+        }}
+      >
+        Pointer lock activates on mission start
+      </div>
+    </div>
   );
 }
 
@@ -118,7 +248,6 @@ export default function Game() {
 
   const handlePlayerReady = useCallback(() => {
     initState.markStageComplete('playerReady');
-    // Initialize game on backend when player spawns
     if (!gameState.isGameStarted && !gameState.isLoading) {
       gameState.initializeGame();
     }
@@ -145,15 +274,160 @@ export default function Game() {
   // Show start screen
   if (!hasStarted) {
     return (
-      <div className="fixed inset-0 flex flex-col items-center justify-center bond-start-screen">
-        <div className="bond-title-card">
-          <div className="bond-gun-barrel" />
-          <h1 className="bond-title">OPERATION: NAKATOMI</h1>
-          <p className="bond-subtitle">A First-Person Tactical Experience</p>
-          <button className="bond-start-btn" onClick={handleStart}>
+      <div
+        className="fixed inset-0 flex flex-col items-center justify-center overflow-auto"
+        style={{
+          background: 'oklch(0.04 0 0)',
+          backgroundImage: 'url(/assets/generated/bond-title-bg.dim_1920x1080.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        {/* Dark overlay */}
+        <div
+          className="absolute inset-0"
+          style={{ background: 'oklch(0.04 0 0 / 0.82)' }}
+        />
+
+        {/* Scan-line overlay */}
+        <div className="absolute inset-0 scan-line-overlay" />
+
+        {/* Corner accents */}
+        <div className="absolute top-0 left-0 w-24 h-24 pointer-events-none">
+          <div className="absolute top-6 left-6 w-12 h-px" style={{ background: 'oklch(0.78 0.18 85 / 0.5)' }} />
+          <div className="absolute top-6 left-6 w-px h-12" style={{ background: 'oklch(0.78 0.18 85 / 0.5)' }} />
+        </div>
+        <div className="absolute top-0 right-0 w-24 h-24 pointer-events-none">
+          <div className="absolute top-6 right-6 w-12 h-px" style={{ background: 'oklch(0.78 0.18 85 / 0.5)' }} />
+          <div className="absolute top-6 right-6 w-px h-12" style={{ background: 'oklch(0.78 0.18 85 / 0.5)' }} />
+        </div>
+        <div className="absolute bottom-0 left-0 w-24 h-24 pointer-events-none">
+          <div className="absolute bottom-6 left-6 w-12 h-px" style={{ background: 'oklch(0.78 0.18 85 / 0.5)' }} />
+          <div className="absolute bottom-6 left-6 w-px h-12" style={{ background: 'oklch(0.78 0.18 85 / 0.5)' }} />
+        </div>
+        <div className="absolute bottom-0 right-0 w-24 h-24 pointer-events-none">
+          <div className="absolute bottom-6 right-6 w-12 h-px" style={{ background: 'oklch(0.78 0.18 85 / 0.5)' }} />
+          <div className="absolute bottom-6 right-6 w-px h-12" style={{ background: 'oklch(0.78 0.18 85 / 0.5)' }} />
+        </div>
+
+        {/* Main content */}
+        <div
+          className="relative z-10 flex flex-col items-center gap-6 px-4 py-10"
+          style={{ width: '100%', maxWidth: 480 }}
+        >
+          {/* Gun barrel */}
+          <div className="bond-barrel-container">
+            <div className="bond-barrel-ring" />
+            <div className="bond-barrel-ring-inner" />
+            <div className="bond-barrel-center">
+              <span
+                className="title-reveal"
+                style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: '1.5rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.15em',
+                  color: 'oklch(0.78 0.18 85)',
+                  textShadow: '0 0 12px oklch(0.78 0.18 85 / 0.8)',
+                }}
+              >
+                007
+              </span>
+            </div>
+          </div>
+
+          {/* Title block */}
+          <div className="flex flex-col items-center gap-1 text-center">
+            <p
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: '0.6rem',
+                letterSpacing: '0.45em',
+                textTransform: 'uppercase',
+                color: 'oklch(0.78 0.18 85 / 0.5)',
+              }}
+            >
+              CLASSIFIED OPERATION
+            </p>
+            <h1
+              className="title-reveal"
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: '2rem',
+                fontWeight: 700,
+                letterSpacing: '0.25em',
+                textTransform: 'uppercase',
+                color: 'oklch(0.78 0.18 85)',
+                textShadow: '0 0 24px oklch(0.78 0.18 85 / 0.5)',
+                lineHeight: 1.1,
+              }}
+            >
+              OPERATION:<br />NAKATOMI
+            </h1>
+            <p
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: '0.7rem',
+                letterSpacing: '0.3em',
+                textTransform: 'uppercase',
+                color: 'oklch(0.55 0.05 85 / 0.7)',
+                marginTop: '0.25rem',
+              }}
+            >
+              A First-Person Tactical Experience
+            </p>
+          </div>
+
+          {/* Divider */}
+          <div
+            style={{
+              width: '100%',
+              height: 1,
+              background: 'linear-gradient(90deg, transparent, oklch(0.78 0.18 85 / 0.4), transparent)',
+            }}
+          />
+
+          {/* Controls panel */}
+          <ControlsPanel />
+
+          {/* Divider */}
+          <div
+            style={{
+              width: '100%',
+              height: 1,
+              background: 'linear-gradient(90deg, transparent, oklch(0.78 0.18 85 / 0.4), transparent)',
+            }}
+          />
+
+          {/* Begin Mission button */}
+          <button
+            className="btn-bond-primary"
+            onClick={handleStart}
+            style={{
+              padding: '0.85rem 3rem',
+              fontSize: '0.8rem',
+              letterSpacing: '0.3em',
+              cursor: 'pointer',
+              width: '100%',
+              maxWidth: 280,
+            }}
+          >
             BEGIN MISSION
           </button>
-          <p className="bond-hint">Click to engage · WASD to move · Mouse to aim · Click to fire</p>
+
+          {/* Classification footer */}
+          <p
+            style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: '0.55rem',
+              letterSpacing: '0.35em',
+              textTransform: 'uppercase',
+              color: 'oklch(0.78 0.18 85 / 0.2)',
+              textAlign: 'center',
+            }}
+          >
+            TOP SECRET — FOR AUTHORIZED PERSONNEL ONLY
+          </p>
         </div>
       </div>
     );

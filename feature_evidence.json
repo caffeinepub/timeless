@@ -2,10 +2,10 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-increase-the-duration-of-the-bond-style-gun-barrel-007-loading-animation-shown-on-the-initialloadingscreen-so-that-it-remains-visible-for-a-noticeably-longer-period-when-the-page-first-loads",
-      "featureTitle": "Increase the duration of the Bond-style gun barrel (007) loading animation shown on the InitialLoadingScreen so that it remains visible for a noticeably longer period when the page first loads.",
+      "featureId": "feature-add-a-controls-reference-panel-to-the-start-mission-screen-that-displays-the-game-controls-wasd-movement-mouse-aim-shoot-space-to-jump-or-interact-and-any-other-relevant-keybindings-so-players-can-see-them-before-starting-the-game",
+      "featureTitle": "Add a controls reference panel to the start/mission screen that displays the game controls (WASD movement, mouse aim/shoot, Space to jump or interact, and any other relevant keybindings) so players can see them before starting the game.",
       "files": [
-        "frontend/src/components/InitialLoadingScreen.tsx"
+        "frontend/src/components/Game.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -15,7 +15,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-1"
+        "REQ-2"
       ],
       "confidence": "high"
     }

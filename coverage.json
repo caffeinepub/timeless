@@ -1,24 +1,33 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-03-01T22:37:41.866Z",
+  "generatedAt": "2026-03-02T20:35:05.269Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 1,
+    "total": 2,
     "implemented": 1,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Increase the duration of the Bond-style gun barrel (007) loading animation shown on the InitialLoadingScreen so that it remains visible for a noticeably longer period when the page first loads.",
-        "status": "implemented",
+        "summary": "Revert the InitialLoadingScreen component to the original Bond-themed gun barrel loading animation and intro sequence, removing any extended duration changes introduced in recent versions. Restore the original minimum display time, animation timing, and visual elements.",
+        "status": "missing",
         "plannedFiles": [
           "frontend/src/components/InitialLoadingScreen.tsx"
         ],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-2",
+        "summary": "Add a controls reference panel to the start/mission screen that displays the game controls (WASD movement, mouse aim/shoot, Space to jump or interact, and any other relevant keybindings) so players can see them before starting the game.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/Game.tsx"
+        ],
         "matchedFiles": [
-          "frontend/src/components/InitialLoadingScreen.tsx"
+          "frontend/src/components/Game.tsx"
         ]
       }
     ]
@@ -28,9 +37,7 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/App.tsx",
-    "frontend/src/components/InitialLoadingScreen.tsx",
-    "frontend/src/styles/game-theme.css",
+    "frontend/src/components/Game.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

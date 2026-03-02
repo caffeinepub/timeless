@@ -1,36 +1,58 @@
 {
   "kind": "build_request",
-  "title": "Extend 007 loading animation duration on initial page load",
-  "projectName": "Agent 007",
+  "title": "Revert opening load sequence and add controls to start screen",
+  "projectName": "Operation Timeless",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Increase the duration of the Bond-style gun barrel (007) loading animation shown on the InitialLoadingScreen so that it remains visible for a noticeably longer period when the page first loads.",
+      "text": "Revert the InitialLoadingScreen component to the original Bond-themed gun barrel loading animation and intro sequence, removing any extended duration changes introduced in recent versions. Restore the original minimum display time, animation timing, and visual elements.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-6"
+          "msg-8"
         ],
         "quotes": [
-          "when the page first loads can the load of the 007 last longer"
+          "resort back to the opening load out"
         ]
       },
       "acceptanceCriteria": [
-        "The gun barrel / 007 animation on InitialLoadingScreen plays for a longer duration before transitioning to the game.",
-        "The extended animation feels intentional and cinematic rather than a freeze or hang.",
-        "The rest of the loading sequence (progress bar, stage labels) still completes normally after the animation."
+        "InitialLoadingScreen displays the original Bond-themed gun barrel animation without extended timing modifications",
+        "The loading screen minimum display time is restored to its original value (not the extended 007 intro duration from recent versions)",
+        "All original scan-line overlay, progress bar, and corner accent decorations are present",
+        "The transition from the loading screen to the start/mission page matches the original behavior"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Add a controls reference panel to the start/mission screen that displays the game controls (WASD movement, mouse aim/shoot, Space to jump or interact, and any other relevant keybindings) so players can see them before starting the game.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-8"
+        ],
+        "quotes": [
+          "add controls to start screen"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The start/mission screen displays a clearly labeled controls section listing all player keybindings (WASD, mouse look, shoot, space)",
+        "The controls panel is styled consistently with the existing James Bond / Die Hard black, charcoal, and gold theme",
+        "The controls panel does not obstruct the 'Begin Mission' call-to-action button",
+        "Controls are readable at desktop resolutions and do not break the layout"
       ]
     }
   ],
   "constraints": [
-    "Do not alter files listed in frontend.immutablePaths.",
-    "Do not change any backend logic or data models."
+    "Do not modify any files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui",
+    "Preserve the game instructions content that was kept in the previous iteration",
+    "Keep the James Bond / Die Hard visual theme intact across all modified components"
   ],
   "nonGoals": [
-    "Changing the visual design or style of the loading animation.",
-    "Modifying in-game loading overlays (LoadingScreen.tsx).",
-    "Adding new animation keyframes or assets."
+    "Extending or further modifying the gun barrel animation duration",
+    "Changes to in-game HUD or gameplay logic",
+    "Backend changes",
+    "Adding new gameplay features"
   ],
   "imageRequirements": {
     "required": [],

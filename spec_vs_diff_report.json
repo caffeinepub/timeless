@@ -1,16 +1,32 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-03-01T22:37:41.863Z",
-  "summary": "The diff implements the extension of the 007 loading animation duration by slowing the CSS rotation animations (bond-rotate from 4s to 10s for outer ring, 14s for inner ring) and introducing a MIN_DISPLAY_MS constant of 4500ms that enforces a minimum visible duration for the InitialLoadingScreen. The progress bar is throttled to pace with this minimum time, ensuring the loading sequence still completes normally after the animation. These changes align well with REQ-1's acceptance criteria.",
-  "missing_requirements": [],
-  "hallucinated_features": [],
-  "confidence": 0.92,
+  "generatedAt": "2026-03-02T20:35:05.265Z",
+  "summary": "REQ-2 (controls panel on start screen) is clearly implemented in Game.tsx with a ControlsPanel component listing WASD, mouse, click, space, and ESC keybindings styled in the gold/charcoal theme. REQ-1 (revert InitialLoadingScreen to original Bond-themed gun barrel animation) is not evidenced in the diff — no changes to InitialLoadingScreen component are present, and the file-summaries note mentions gun barrel animations were slowed to 10s/14s in game-theme.css, which contradicts the revert requirement.",
+  "missing_requirements": [
+    {
+      "id": "REQ-1",
+      "requirement": "Revert the InitialLoadingScreen component to the original Bond-themed gun barrel loading animation and intro sequence, removing any extended duration changes introduced in recent versions. Restore the original minimum display time, animation timing, and visual elements.",
+      "reason": "No changes to InitialLoadingScreen are present in the diff. The frontend-file-summaries.txt describes game-theme.css as having gun barrel animations slowed to 10s (outer ring) and 14s (cinematic feel), suggesting extended durations remain rather than being reverted. There is no evidence the minimum display time was restored or that extended 007 intro duration was removed.",
+      "evidence": [
+        "frontend/src/styles/game-theme.css",
+        "frontend-file-summaries.txt"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "ESC key binding ('Release Mouse Cursor') added to controls panel",
+      "reason": "The build request lists WASD movement, mouse aim/shoot, and Space to jump/interact as required keybindings. ESC to release the mouse cursor was not mentioned in REQ-2 or its acceptance criteria.",
+      "evidence": [
+        "frontend/src/components/Game.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.82,
   "changed_files": [
     "frontend-file-summaries.txt",
-    "frontend/src/App.tsx",
-    "frontend/src/components/InitialLoadingScreen.tsx",
-    "frontend/src/styles/game-theme.css",
+    "frontend/src/components/Game.tsx",
     "project_state.json"
   ]
 }

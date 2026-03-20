@@ -1,7 +1,7 @@
-import { useRef, useEffect } from 'react';
-import { useFrame } from '@react-three/fiber';
-import { useTexture } from '@react-three/drei';
-import * as THREE from 'three';
+import { useTexture } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
+import { useEffect, useRef } from "react";
+import * as THREE from "three";
 
 interface MuzzleFlashProps {
   camera: THREE.Camera;
@@ -9,7 +9,7 @@ interface MuzzleFlashProps {
 
 export default function MuzzleFlash({ camera }: MuzzleFlashProps) {
   const meshRef = useRef<THREE.Mesh>(null);
-  const texture = useTexture('/assets/generated/muzzle-flash.dim_256x256.png');
+  const texture = useTexture("/assets/generated/muzzle-flash.dim_256x256.png");
   const opacity = useRef(1);
 
   useEffect(() => {

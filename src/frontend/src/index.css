@@ -1,67 +1,95 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&display=swap");
+@import "./styles/game-theme.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-    :root {
-        --radius: 0.625rem;
-        --background: 0.08 0.02 240;
-        --foreground: 0.95 0.02 240;
-        --card: 0.12 0.02 240;
-        --card-foreground: 0.95 0.02 240;
-        --popover: 0.15 0.02 240;
-        --popover-foreground: 0.95 0.02 240;
-        --primary: 0.6 0.08 240;
-        --primary-foreground: 0.95 0.02 240;
-        --secondary: 0.25 0.04 240;
-        --secondary-foreground: 0.95 0.02 240;
-        --muted: 0.25 0.04 240;
-        --muted-foreground: 0.6 0.06 220;
-        --accent: 0.65 0.1 200;
-        --accent-foreground: 0.95 0.02 240;
-        --destructive: 0.55 0.2 20;
-        --destructive-foreground: 0.95 0.02 240;
-        --border: 0.3 0.04 240;
-        --input: 0.3 0.04 240;
-        --ring: 0.6 0.08 240;
-        --chart-1: 0.6 0.12 210;
-        --chart-2: 0.55 0.1 180;
-        --chart-3: 0.5 0.08 240;
-        --chart-4: 0.65 0.14 200;
-        --chart-5: 0.7 0.1 220;
-    }
+  :root {
+    /* James Bond / Die Hard — Black, Charcoal, Gold palette */
+    --background: oklch(0.1 0 0);
+    --foreground: oklch(0.85 0 0);
 
-    .dark {
-        --background: 0.08 0.02 240;
-        --foreground: 0.95 0.02 240;
-        --card: 0.12 0.02 240;
-        --card-foreground: 0.95 0.02 240;
-        --popover: 0.15 0.02 240;
-        --popover-foreground: 0.95 0.02 240;
-        --primary: 0.6 0.08 240;
-        --primary-foreground: 0.95 0.02 240;
-        --secondary: 0.25 0.04 240;
-        --secondary-foreground: 0.95 0.02 240;
-        --muted: 0.25 0.04 240;
-        --muted-foreground: 0.6 0.06 220;
-        --accent: 0.65 0.1 200;
-        --accent-foreground: 0.95 0.02 240;
-        --destructive: 0.55 0.2 20;
-        --destructive-foreground: 0.95 0.02 240;
-        --border: 0.3 0.04 240;
-        --input: 0.3 0.04 240;
-        --ring: 0.6 0.08 240;
-        --chart-1: 0.6 0.12 210;
-        --chart-2: 0.55 0.1 180;
-        --chart-3: 0.5 0.08 240;
-        --chart-4: 0.65 0.14 200;
-        --chart-5: 0.7 0.1 220;
-    }
+    --card: oklch(0.13 0 0);
+    --card-foreground: oklch(0.85 0 0);
 
-    * {
-        @apply border-border;
-    }
-    body {
-        @apply bg-background text-foreground;
-    }
+    --popover: oklch(0.13 0 0);
+    --popover-foreground: oklch(0.85 0 0);
+
+    --primary: oklch(0.75 0.15 85);
+    --primary-foreground: oklch(0.1 0 0);
+
+    --secondary: oklch(0.22 0 0);
+    --secondary-foreground: oklch(0.75 0.15 85);
+
+    --muted: oklch(0.18 0 0);
+    --muted-foreground: oklch(0.55 0 0);
+
+    --accent: oklch(0.75 0.15 85);
+    --accent-foreground: oklch(0.1 0 0);
+
+    --destructive: oklch(0.55 0.22 25);
+    --destructive-foreground: oklch(0.95 0 0);
+
+    --border: oklch(0.28 0.03 85);
+    --input: oklch(0.22 0 0);
+    --ring: oklch(0.75 0.15 85);
+
+    --radius: 0px;
+
+    --success: oklch(0.65 0.15 145);
+    --warning: oklch(0.75 0.15 85);
+  }
+
+  .dark {
+    --background: oklch(0.1 0 0);
+    --foreground: oklch(0.85 0 0);
+
+    --card: oklch(0.13 0 0);
+    --card-foreground: oklch(0.85 0 0);
+
+    --popover: oklch(0.13 0 0);
+    --popover-foreground: oklch(0.85 0 0);
+
+    --primary: oklch(0.75 0.15 85);
+    --primary-foreground: oklch(0.1 0 0);
+
+    --secondary: oklch(0.22 0 0);
+    --secondary-foreground: oklch(0.75 0.15 85);
+
+    --muted: oklch(0.18 0 0);
+    --muted-foreground: oklch(0.55 0 0);
+
+    --accent: oklch(0.75 0.15 85);
+    --accent-foreground: oklch(0.1 0 0);
+
+    --destructive: oklch(0.55 0.22 25);
+    --destructive-foreground: oklch(0.95 0 0);
+
+    --border: oklch(0.28 0.03 85);
+    --input: oklch(0.22 0 0);
+    --ring: oklch(0.75 0.15 85);
+  }
+
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    font-family: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  }
+
+  #root {
+    width: 100%;
+    height: 100%;
+  }
 }

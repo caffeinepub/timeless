@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from "react";
 
 interface DependencyCheckResult {
   isReady: boolean;
@@ -11,6 +11,8 @@ interface DependencyCheckResult {
     fiberLoaded: boolean;
   };
 }
+
+const DEPENDENCY_TIMEOUT_MS = 10000; // 10 seconds for dependency checks
 
 export function useDependencyCheck(): DependencyCheckResult {
   const [result, setResult] = useState<DependencyCheckResult>({
@@ -26,21 +28,47 @@ export function useDependencyCheck(): DependencyCheckResult {
   });
 
   useEffect(() => {
-    console.log('🔍 Starting dependency check at', new Date().toISOString());
+    const startTime = performance.now();
+    console.log(
+      "🔍 Starting dependency check at",
+      new Date().toISOString(),
+      "/",
+      startTime.toFixed(2),
+      "ms",
+    );
 
     const checkDependencies = async () => {
       try {
+        // Create timeout promise
+        const timeoutPromise = new Promise<never>((_, reject) => {
+          setTimeout(() => {
+            reject(
+              new Error(
+                `Dependency check timed out after ${DEPENDENCY_TIMEOUT_MS / 1000} seconds`,
+              ),
+            );
+          }, DEPENDENCY_TIMEOUT_MS);
+        });
+
         // Check WebGL support
-        const canvas = document.createElement('canvas');
-        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        const webglStart = performance.now();
+        const canvas = document.createElement("canvas");
+        const gl =
+          canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
         const webglSupported = !!gl;
-        console.log('🖼️ WebGL supported:', webglSupported);
+        const webglEnd = performance.now();
+        console.log(
+          "🖼️ WebGL check completed in",
+          (webglEnd - webglStart).toFixed(2),
+          "ms - supported:",
+          webglSupported,
+        );
 
         if (!webglSupported) {
           setResult({
             isReady: false,
             isLoading: false,
-            error: 'WebGL is not supported in your browser',
+            error: "WebGL is not supported in your browser",
             details: {
               webglSupported: false,
               threeJsLoaded: false,
@@ -51,59 +79,97 @@ export function useDependencyCheck(): DependencyCheckResult {
           return;
         }
 
-        // Check if Three.js is loaded
+        // Check if Three.js is loaded with timeout
+        const threeStart = performance.now();
         let threeJsLoaded = false;
         try {
-          const { Vector3 } = await import('three');
+          const threeImport = import("three");
+          const { Vector3 } = await Promise.race([threeImport, timeoutPromise]);
           threeJsLoaded = !!Vector3;
-          console.log('📦 Three.js loaded:', threeJsLoaded);
+          const threeEnd = performance.now();
+          console.log(
+            "📦 Three.js check completed in",
+            (threeEnd - threeStart).toFixed(2),
+            "ms - loaded:",
+            threeJsLoaded,
+          );
         } catch (error) {
-          console.error('❌ Three.js failed to load:', error);
+          console.error("❌ Three.js failed to load:", error);
+          throw new Error(
+            `Three.js failed to load: ${error instanceof Error ? error.message : String(error)}`,
+          );
         }
 
-        // Check if React Three Fiber is loaded
+        // Check if React Three Fiber is loaded with timeout
+        const fiberStart = performance.now();
         let fiberLoaded = false;
         try {
-          const { Canvas } = await import('@react-three/fiber');
+          const fiberImport = import("@react-three/fiber");
+          const { Canvas } = await Promise.race([fiberImport, timeoutPromise]);
           fiberLoaded = !!Canvas;
-          console.log('⚛️ React Three Fiber loaded:', fiberLoaded);
+          const fiberEnd = performance.now();
+          console.log(
+            "⚛️ React Three Fiber check completed in",
+            (fiberEnd - fiberStart).toFixed(2),
+            "ms - loaded:",
+            fiberLoaded,
+          );
         } catch (error) {
-          console.error('❌ React Three Fiber failed to load:', error);
+          console.error("❌ React Three Fiber failed to load:", error);
+          throw new Error(
+            `React Three Fiber failed to load: ${error instanceof Error ? error.message : String(error)}`,
+          );
         }
 
-        // Check if Cannon is loaded
+        // Check if Cannon is loaded with timeout
+        const cannonStart = performance.now();
         let cannonLoaded = false;
         try {
-          const { Physics } = await import('@react-three/cannon');
+          const cannonImport = import("@react-three/cannon");
+          const { Physics } = await Promise.race([
+            cannonImport,
+            timeoutPromise,
+          ]);
           cannonLoaded = !!Physics;
-          console.log('🎱 Cannon physics loaded:', cannonLoaded);
+          const cannonEnd = performance.now();
+          console.log(
+            "🎱 Cannon physics check completed in",
+            (cannonEnd - cannonStart).toFixed(2),
+            "ms - loaded:",
+            cannonLoaded,
+          );
         } catch (error) {
-          console.error('❌ Cannon physics failed to load:', error);
+          console.error("❌ Cannon physics failed to load:", error);
+          throw new Error(
+            `Cannon physics failed to load: ${error instanceof Error ? error.message : String(error)}`,
+          );
         }
 
-        const allLoaded = webglSupported && threeJsLoaded && fiberLoaded && cannonLoaded;
+        const allLoaded =
+          webglSupported && threeJsLoaded && fiberLoaded && cannonLoaded;
+        const totalTime = performance.now() - startTime;
+        console.log(
+          "⏱️ Total dependency check time:",
+          totalTime.toFixed(2),
+          "ms",
+        );
 
         if (!allLoaded) {
           const missing: string[] = [];
-          if (!threeJsLoaded) missing.push('Three.js');
-          if (!fiberLoaded) missing.push('React Three Fiber');
-          if (!cannonLoaded) missing.push('Cannon Physics');
+          if (!threeJsLoaded) missing.push("Three.js");
+          if (!fiberLoaded) missing.push("React Three Fiber");
+          if (!cannonLoaded) missing.push("Cannon Physics");
 
-          setResult({
-            isReady: false,
-            isLoading: false,
-            error: `Failed to load required dependencies: ${missing.join(', ')}`,
-            details: {
-              webglSupported,
-              threeJsLoaded,
-              cannonLoaded,
-              fiberLoaded,
-            },
-          });
-          return;
+          throw new Error(
+            `Failed to load required dependencies: ${missing.join(", ")}`,
+          );
         }
 
-        console.log('✅ All dependencies loaded successfully');
+        console.log(
+          "✅ All dependencies loaded successfully in",
+          totalTime.toFixed(2),
+          "ms",
+        );
         setResult({
           isReady: true,
           isLoading: false,
@@ -116,11 +182,15 @@ export function useDependencyCheck(): DependencyCheckResult {
           },
         });
       } catch (error) {
-        console.error('❌ Dependency check failed:', error);
+        console.error("❌ Dependency check failed:", error);
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : "Unknown error during dependency check";
         setResult({
           isReady: false,
           isLoading: false,
-          error: error instanceof Error ? error.message : 'Unknown error during dependency check',
+          error: errorMessage,
           details: {
             webglSupported: false,
             threeJsLoaded: false,

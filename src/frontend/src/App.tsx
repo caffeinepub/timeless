@@ -1,29 +1,19 @@
-import { ErrorBoundary } from './components/ErrorBoundary';
-import Game from './components/Game';
-import './styles/game-theme.css';
-import { useEffect } from 'react';
+import { Suspense, lazy } from "react";
+import ErrorBoundary from "./components/ErrorBoundary";
+import InitialLoadingScreen from "./components/InitialLoadingScreen";
 
-function App() {
-  useEffect(() => {
-    console.log('🎮 App component mounted at', new Date().toISOString());
-    console.log('🌐 Hostname:', window.location.hostname);
-    console.log('📍 Current URL:', window.location.href);
-    console.log('🖥️ User Agent:', navigator.userAgent);
-    console.log('📱 Screen:', window.screen.width, 'x', window.screen.height);
-    
-    return () => {
-      console.log('🎮 App component unmounting at', new Date().toISOString());
-      console.log('🧹 Cleaning up app-level resources');
-    };
-  }, []);
+const Game = lazy(() => import("./components/Game"));
 
+export default function App() {
   return (
     <ErrorBoundary>
-      <div className="w-full h-screen overflow-hidden bg-background">
+      <Suspense
+        fallback={
+          <InitialLoadingScreen progress={5} stage="INITIALIZING SYSTEMS" />
+        }
+      >
         <Game />
-      </div>
+      </Suspense>
     </ErrorBoundary>
   );
 }
-
-export default App;

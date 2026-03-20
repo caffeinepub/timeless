@@ -1,137 +1,104 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { Button } from '@/components/ui/button';
-import { AlertCircle, RefreshCw } from 'lucide-react';
+import React, { Component, type ErrorInfo, type ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
+  fallback?: ReactNode;
 }
 
 interface State {
   hasError: boolean;
   error: Error | null;
   errorInfo: ErrorInfo | null;
-  timestamp: string | null;
+  showDetails: boolean;
 }
 
-export class ErrorBoundary extends Component<Props, State> {
+export default class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
       hasError: false,
       error: null,
       errorInfo: null,
-      timestamp: null,
+      showDetails: false,
     };
   }
 
   static getDerivedStateFromError(error: Error): Partial<State> {
-    console.error('🔴 ErrorBoundary.getDerivedStateFromError:', error);
-    return {
-      hasError: true,
-      error,
-      timestamp: new Date().toISOString(),
-    };
+    return { hasError: true, error };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    const timestamp = new Date().toISOString();
-    console.error('🔴 ErrorBoundary caught an error at', timestamp);
-    console.error('🔴 Error:', error);
-    console.error('🔴 Error name:', error.name);
-    console.error('🔴 Error message:', error.message);
-    console.error('🔴 Error stack:', error.stack);
-    console.error('🔴 Component stack:', errorInfo.componentStack);
-    
-    this.setState({
+    console.error(
+      `[ErrorBoundary ${new Date().toISOString()}]`,
       error,
       errorInfo,
-      timestamp,
-    });
+    );
+    this.setState({ errorInfo });
+
+    // Release pointer lock if active
+    if (document.pointerLockElement) {
+      document.exitPointerLock();
+    }
   }
 
   handleReset = () => {
-    console.log('🔄 Resetting error boundary and reloading page at', new Date().toISOString());
-    
-    // Release pointer lock before reload
-    if (document.pointerLockElement) {
-      document.exitPointerLock();
-      console.log('🔓 Pointer lock released before reload');
-    }
-    
-    // Reset state first
     this.setState({
       hasError: false,
       error: null,
       errorInfo: null,
-      timestamp: null,
+      showDetails: false,
     });
-    
-    // Small delay to ensure state is cleared
-    setTimeout(() => {
-      window.location.reload();
-    }, 100);
+    window.location.reload();
   };
 
   render() {
     if (this.state.hasError) {
+      if (this.props.fallback) return this.props.fallback;
+
       return (
-        <div className="w-full h-screen flex items-center justify-center bg-background p-4">
-          <div className="game-card max-w-2xl w-full p-8 space-y-6">
-            <div className="flex items-center gap-4">
-              <AlertCircle className="w-12 h-12 text-destructive flex-shrink-0" />
-              <div>
-                <h1 className="game-title text-2xl font-bold">Application Error</h1>
-                <p className="text-sm text-muted-foreground">
-                  {this.state.timestamp && `Occurred at ${new Date(this.state.timestamp).toLocaleString()}`}
+        <div className="fixed inset-0 flex items-center justify-center bg-black p-4">
+          <div className="bond-error-card max-w-lg w-full">
+            <div className="bond-card-accent-line" />
+            <div className="p-8 flex flex-col gap-6">
+              <div className="text-center">
+                <div className="bond-error-icon-lg mb-4">⊘</div>
+                <h1 className="bond-error-title">CRITICAL SYSTEM FAILURE</h1>
+                <p className="bond-error-subtitle">
+                  An unexpected error has occurred
                 </p>
               </div>
-            </div>
 
-            {this.state.error && (
-              <div className="space-y-2">
-                <h2 className="font-semibold text-lg">Error Details:</h2>
-                <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-lg space-y-2">
-                  <p className="font-mono text-sm text-destructive">
-                    <strong>{this.state.error.name}:</strong> {this.state.error.message}
-                  </p>
-                  {this.state.error.stack && (
-                    <details className="text-xs">
-                      <summary className="cursor-pointer text-muted-foreground hover:text-foreground">
-                        Stack Trace
-                      </summary>
-                      <pre className="mt-2 p-2 bg-background/50 rounded overflow-x-auto text-muted-foreground">
-                        {this.state.error.stack}
-                      </pre>
-                    </details>
-                  )}
+              {this.state.error && (
+                <div className="bond-error-details">
+                  <p className="bond-error-msg">{this.state.error.message}</p>
                 </div>
-              </div>
-            )}
+              )}
 
-            {this.state.errorInfo?.componentStack && (
-              <div className="space-y-2">
-                <h2 className="font-semibold text-lg">Component Stack:</h2>
-                <details className="text-xs">
-                  <summary className="cursor-pointer text-muted-foreground hover:text-foreground">
-                    Show Component Stack
-                  </summary>
-                  <pre className="mt-2 p-4 bg-muted/50 rounded overflow-x-auto text-muted-foreground">
-                    {this.state.errorInfo.componentStack}
-                  </pre>
-                </details>
-              </div>
-            )}
+              <button
+                type="button"
+                className="bond-hud-label text-left underline cursor-pointer"
+                onClick={() =>
+                  this.setState((s) => ({ showDetails: !s.showDetails }))
+                }
+              >
+                {this.state.showDetails ? "HIDE DETAILS" : "SHOW DETAILS"}
+              </button>
 
-            <div className="flex gap-3 pt-4">
-              <Button onClick={this.handleReset} className="game-button flex-1" size="lg">
-                <RefreshCw className="w-4 h-4 mr-2" />
-                Reload Application
-              </Button>
+              {this.state.showDetails && this.state.errorInfo && (
+                <pre className="bond-error-stack">
+                  {this.state.errorInfo.componentStack}
+                </pre>
+              )}
+
+              <button
+                type="button"
+                className="bond-btn-gold w-full"
+                onClick={this.handleReset}
+              >
+                REINITIALIZE SYSTEM
+              </button>
             </div>
-
-            <p className="text-xs text-muted-foreground text-center pt-4 border-t border-border">
-              If this error persists, please try clearing your browser cache or using a different browser.
-            </p>
+            <div className="bond-card-accent-line" />
           </div>
         </div>
       );

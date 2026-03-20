@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { useGameState as useBackendGameState } from './useQueries';
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useGameState as useBackendGameState } from "./useQueries";
 
 export interface LocalGameState {
   health: number;
@@ -20,6 +20,10 @@ export function useGameState() {
     isGameStarted: false,
   });
 
+  const [currentLevel, setCurrentLevel] = useState(1);
+  const [isLevelComplete, setIsLevelComplete] = useState(false);
+  const [isGameComplete, setIsGameComplete] = useState(false);
+
   const isMountedRef = useRef(true);
 
   const {
@@ -32,14 +36,9 @@ export function useGameState() {
   } = useBackendGameState(PLAYER_ID);
 
   useEffect(() => {
-    console.log('🎮 useGameState hook initialized at', new Date().toISOString());
     isMountedRef.current = true;
-
     return () => {
-      console.log('🎮 useGameState hook cleaning up at', new Date().toISOString());
       isMountedRef.current = false;
-      
-      // Reset local state on unmount
       setLocalState({
         health: 100,
         ammunition: 50,
@@ -47,19 +46,13 @@ export function useGameState() {
         enemiesDefeated: 0,
         isGameStarted: false,
       });
-      
-      console.log('✅ Game state reset to initial values');
     };
   }, []);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: isLoading is intentionally included to re-sync when loading completes
   useEffect(() => {
     if (!isMountedRef.current) return;
-
-    console.log('🔄 Backend state updated:', backendState);
-    console.log('⏳ Backend loading:', isLoading);
-    
     if (backendState) {
-      console.log('✅ Syncing backend state to local state');
       setLocalState({
         health: Number(backendState.health),
         ammunition: Number(backendState.ammunition),
@@ -71,34 +64,18 @@ export function useGameState() {
   }, [backendState, isLoading]);
 
   const initializeGame = useCallback(() => {
-    if (!isMountedRef.current) {
-      console.log('⏭️ Game state unmounted, skipping initialization');
-      return;
-    }
-
-    console.log('🎮 initializeGame called', {
-      isGameStarted: localState.isGameStarted,
-      isLoading,
-      timestamp: new Date().toISOString(),
-    });
-    
+    if (!isMountedRef.current) return;
     if (!localState.isGameStarted && !isLoading) {
-      console.log('🚀 Starting game on backend...');
       try {
         startGame();
-        console.log('✅ Backend startGame called successfully');
       } catch (error) {
-        console.error('❌ Failed to start game:', error);
+        console.error("Failed to start game:", error);
       }
-    } else {
-      console.log('⏭️ Game already started or loading, skipping initialization');
     }
   }, [localState.isGameStarted, isLoading, startGame]);
 
   const decrementAmmo = useCallback(() => {
     if (!isMountedRef.current) return;
-    
-    console.log('🔫 Decrementing ammunition');
     setLocalState((prev) => ({
       ...prev,
       ammunition: Math.max(0, prev.ammunition - 1),
@@ -107,8 +84,6 @@ export function useGameState() {
 
   const handleEnemyDefeat = useCallback(() => {
     if (!isMountedRef.current) return;
-    
-    console.log('💀 Handling enemy defeat at', new Date().toISOString());
     try {
       defeatEnemy();
       increaseScore(BigInt(100));
@@ -117,30 +92,49 @@ export function useGameState() {
         score: prev.score + 100,
         enemiesDefeated: prev.enemiesDefeated + 1,
       }));
-      console.log('✅ Enemy defeat processed');
     } catch (error) {
-      console.error('❌ Failed to process enemy defeat:', error);
+      console.error("Failed to process enemy defeat:", error);
     }
   }, [defeatEnemy, increaseScore]);
 
   const handleTakeDamage = useCallback(
     (amount: number) => {
       if (!isMountedRef.current) return;
-      
-      console.log('💔 Taking damage:', amount, 'at', new Date().toISOString());
       try {
         takeDamage(BigInt(amount));
         setLocalState((prev) => ({
           ...prev,
           health: Math.max(0, prev.health - amount),
         }));
-        console.log('✅ Damage processed');
       } catch (error) {
-        console.error('❌ Failed to process damage:', error);
+        console.error("Failed to process damage:", error);
       }
     },
-    [takeDamage]
+    [takeDamage],
   );
+
+  const completedLevel = useCallback(() => {
+    if (!isMountedRef.current) return;
+    setIsLevelComplete(true);
+  }, []);
+
+  const advanceLevel = useCallback(() => {
+    if (!isMountedRef.current) return;
+    setCurrentLevel((prev) => {
+      if (prev >= 10) {
+        setIsGameComplete(true);
+        setIsLevelComplete(false);
+        return prev;
+      }
+      setIsLevelComplete(false);
+      return prev + 1;
+    });
+  }, []);
+
+  const resetLevel = useCallback(() => {
+    if (!isMountedRef.current) return;
+    setIsLevelComplete(false);
+  }, []);
 
   return {
     ...localState,
@@ -149,5 +143,11 @@ export function useGameState() {
     handleEnemyDefeat,
     handleTakeDamage,
     isLoading,
+    currentLevel,
+    isLevelComplete,
+    isGameComplete,
+    completedLevel,
+    advanceLevel,
+    resetLevel,
   };
 }

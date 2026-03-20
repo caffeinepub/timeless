@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 export interface PlayerControls {
   forward: boolean;
@@ -23,26 +23,29 @@ export function usePlayerControls() {
   const isMountedRef = useRef(true);
 
   useEffect(() => {
-    console.log('⌨️ Player controls hook initialized at', new Date().toISOString());
+    console.log(
+      "⌨️ Player controls hook initialized at",
+      new Date().toISOString(),
+    );
     isMountedRef.current = true;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isMountedRef.current) return;
-      
+
       switch (e.code) {
-        case 'KeyW':
+        case "KeyW":
           controls.current.forward = true;
           break;
-        case 'KeyS':
+        case "KeyS":
           controls.current.backward = true;
           break;
-        case 'KeyA':
+        case "KeyA":
           controls.current.left = true;
           break;
-        case 'KeyD':
+        case "KeyD":
           controls.current.right = true;
           break;
-        case 'Space':
+        case "Space":
           controls.current.jump = true;
           break;
       }
@@ -50,21 +53,21 @@ export function usePlayerControls() {
 
     const handleKeyUp = (e: KeyboardEvent) => {
       if (!isMountedRef.current) return;
-      
+
       switch (e.code) {
-        case 'KeyW':
+        case "KeyW":
           controls.current.forward = false;
           break;
-        case 'KeyS':
+        case "KeyS":
           controls.current.backward = false;
           break;
-        case 'KeyA':
+        case "KeyA":
           controls.current.left = false;
           break;
-        case 'KeyD':
+        case "KeyD":
           controls.current.right = false;
           break;
-        case 'Space':
+        case "Space":
           controls.current.jump = false;
           break;
       }
@@ -76,18 +79,21 @@ export function usePlayerControls() {
       mouseMovement.current.y = e.movementY || 0;
     };
 
-    console.log('⌨️ Adding keyboard and mouse event listeners');
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-    window.addEventListener('mousemove', handleMouseMove);
+    console.log("⌨️ Adding keyboard and mouse event listeners");
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+    window.addEventListener("mousemove", handleMouseMove);
 
     return () => {
-      console.log('⌨️ Removing keyboard and mouse event listeners at', new Date().toISOString());
+      console.log(
+        "⌨️ Removing keyboard and mouse event listeners at",
+        new Date().toISOString(),
+      );
       isMountedRef.current = false;
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
-      window.removeEventListener('mousemove', handleMouseMove);
-      
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+      window.removeEventListener("mousemove", handleMouseMove);
+
       // Reset controls
       controls.current = {
         forward: false,
@@ -98,8 +104,8 @@ export function usePlayerControls() {
         mouseMovement: { x: 0, y: 0 },
       };
       mouseMovement.current = { x: 0, y: 0 };
-      
-      console.log('✅ Player controls cleanup complete');
+
+      console.log("✅ Player controls cleanup complete");
     };
   }, []);
 

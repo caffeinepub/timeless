@@ -1,5 +1,5 @@
-import { useState, useCallback, useEffect } from 'react';
-import { Vector3 } from 'three';
+import { useCallback, useEffect, useState } from "react";
+import { Vector3 } from "three";
 
 export interface Enemy {
   id: string;
@@ -9,88 +9,75 @@ export interface Enemy {
   isDestroyed: boolean;
 }
 
-const initialEnemies: Enemy[] = [
-  {
-    id: 'enemy-1',
-    position: new Vector3(10, 1, -5),
-    health: 100,
-    maxHealth: 100,
-    isDestroyed: false,
-  },
-  {
-    id: 'enemy-2',
-    position: new Vector3(-8, 1, -10),
-    health: 100,
-    maxHealth: 100,
-    isDestroyed: false,
-  },
-  {
-    id: 'enemy-3',
-    position: new Vector3(0, 1, -15),
-    health: 100,
-    maxHealth: 100,
-    isDestroyed: false,
-  },
-  {
-    id: 'enemy-4',
-    position: new Vector3(15, 1, -12),
-    health: 100,
-    maxHealth: 100,
-    isDestroyed: false,
-  },
-  {
-    id: 'enemy-5',
-    position: new Vector3(-12, 1, -8),
-    health: 100,
-    maxHealth: 100,
-    isDestroyed: false,
-  },
-];
+function generateEnemiesForLevel(level: number): Enemy[] {
+  // Level 1 = 3 enemies, each subsequent adds ~1-2, up to ~15 at level 10
+  const count = Math.min(15, 3 + Math.round((level - 1) * 1.33));
+  // Health: 60 at level 1, 200 at level 10
+  const health = Math.round(60 + (level - 1) * (140 / 9));
+  // Spread: wider positions at higher levels
+  const spread = 8 + (level - 1) * 1.5;
 
-export function useEnemies() {
-  const [enemies, setEnemies] = useState<Enemy[]>(initialEnemies);
+  const positions: Array<[number, number, number]> = [
+    [spread * 0.8, 1, -spread * 0.5],
+    [-spread * 0.75, 1, -spread * 0.6],
+    [0, 1, -spread],
+    [spread, 1, -spread * 0.8],
+    [-spread * 0.5, 1, -spread * 1.1],
+    [spread * 0.3, 1, -spread * 1.3],
+    [-spread * 0.9, 1, -spread * 0.3],
+    [spread * 1.1, 1, -spread * 0.4],
+    [-spread * 0.2, 1, -spread * 0.7],
+    [spread * 0.6, 1, -spread * 1.2],
+    [-spread * 1.1, 1, -spread * 0.9],
+    [spread * 0.9, 1, -spread * 0.2],
+    [-spread * 0.4, 1, -spread * 1.4],
+    [spread * 0.1, 1, -spread * 1.5],
+    [-spread * 0.7, 1, -spread * 0.15],
+  ];
+
+  return positions.slice(0, count).map((pos, i) => ({
+    id: `enemy-${i + 1}`,
+    position: new Vector3(...pos),
+    health,
+    maxHealth: health,
+    isDestroyed: false,
+  }));
+}
+
+export function useEnemies(initialLevel = 1) {
+  const [enemies, setEnemies] = useState<Enemy[]>(() =>
+    generateEnemiesForLevel(initialLevel),
+  );
 
   useEffect(() => {
-    console.log('👾 useEnemies hook initialized with', enemies.length, 'enemies at', new Date().toISOString());
-    
     return () => {
-      console.log('👾 useEnemies hook cleaning up at', new Date().toISOString());
-      // Reset enemies to initial state on unmount
-      setEnemies(initialEnemies);
-      console.log('✅ Enemies reset to initial state');
+      setEnemies(generateEnemiesForLevel(1));
     };
   }, []);
 
   const damageEnemy = useCallback((enemyId: string, damage: number) => {
-    console.log('🎯 damageEnemy called:', { enemyId, damage, timestamp: new Date().toISOString() });
     let enemyDefeated = false;
-    
+
     setEnemies((prev) =>
       prev.map((enemy) => {
         if (enemy.id === enemyId && !enemy.isDestroyed) {
           const newHealth = Math.max(0, enemy.health - damage);
           const isDestroyed = newHealth <= 0;
-          
           if (isDestroyed && !enemy.isDestroyed) {
             enemyDefeated = true;
-            console.log('💀 Enemy destroyed:', enemyId);
           }
-          
-          console.log('🩹 Enemy health updated:', {
-            id: enemyId,
-            oldHealth: enemy.health,
-            newHealth,
-            isDestroyed,
-          });
-          
           return { ...enemy, health: newHealth, isDestroyed };
         }
         return enemy;
-      })
+      }),
     );
-    
+
     return enemyDefeated;
   }, []);
 
-  return { enemies, damageEnemy };
+  const resetForLevel = useCallback((level: number) => {
+    setEnemies(generateEnemiesForLevel(level));
+  }, []);
+
+  return { enemies, damageEnemy, resetForLevel };
 }

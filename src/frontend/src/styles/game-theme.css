@@ -1,130 +1,341 @@
-:root {
-  --game-primary: oklch(0.6 0.08 240);
-  --game-secondary: oklch(0.5 0.06 220);
-  --game-accent: oklch(0.65 0.1 200);
-  --game-muted: oklch(0.4 0.04 240);
-  --game-glow: oklch(0.7 0.12 210);
+/* ============================================================
+   JAMES BOND / DIE HARD GAME THEME
+   Black · Charcoal · Gold palette
+   ============================================================ */
+
+/* ---------- Keyframes ---------- */
+@keyframes bond-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-.game-card {
-  background: oklch(0.15 0.02 240 / 0.9);
-  border: 1px solid oklch(0.3 0.04 240 / 0.3);
-  border-radius: 12px;
-  box-shadow: 0 8px 32px oklch(0 0 0 / 0.5);
+@keyframes bond-barrel-open {
+  0% {
+    transform: scale(0.1);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
-.game-title {
-  color: var(--game-glow);
-  text-shadow: 0 0 20px oklch(0.7 0.12 210 / 0.5);
-  letter-spacing: 0.05em;
+@keyframes bond-walk {
+  0% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  40% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  70% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
 }
 
-.game-button {
-  background: var(--game-primary);
-  color: oklch(0.95 0.02 240);
-  border: 1px solid var(--game-accent);
-  transition: all 0.3s ease;
+@keyframes bond-blood-drop {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+    opacity: 1;
+  }
+  100% {
+    transform: scaleY(1);
+    transform-origin: top;
+    opacity: 0.8;
+  }
 }
 
-.game-button:hover {
-  background: var(--game-accent);
-  box-shadow: 0 0 20px oklch(0.65 0.1 200 / 0.4);
+@keyframes gold-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 8px 2px oklch(0.78 0.18 85 / 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px 6px oklch(0.78 0.18 85 / 0.8);
+  }
 }
 
-.hud-container {
-  position: fixed;
+@keyframes hud-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  93% {
+    opacity: 0.7;
+  }
+  94% {
+    opacity: 1;
+  }
+  97% {
+    opacity: 0.85;
+  }
+  98% {
+    opacity: 1;
+  }
+}
+
+@keyframes scan-line {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+@keyframes muzzle-flash-anim {
+  0% {
+    opacity: 1;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+@keyframes cinematic-fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes title-reveal {
+  0% {
+    opacity: 0;
+    letter-spacing: 0.5em;
+  }
+  100% {
+    opacity: 1;
+    letter-spacing: 0.15em;
+  }
+}
+
+/* ---------- Gun Barrel / Loading ---------- */
+.bond-barrel-container {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bond-barrel-ring {
+  position: absolute;
   inset: 0;
-  pointer-events: none;
-  z-index: 10;
-  font-family: 'Courier New', monospace;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: oklch(0.78 0.18 85);
+  border-right-color: oklch(0.78 0.18 85 / 0.4);
+  /* Slowed from 4s to 10s for a cinematic, deliberate feel */
+  animation: bond-rotate 10s linear infinite;
 }
 
-.hud-crosshair {
+.bond-barrel-ring-inner {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  inset: 16px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-bottom-color: oklch(0.78 0.18 85 / 0.6);
+  border-left-color: oklch(0.78 0.18 85 / 0.3);
+  /* Counter-rotate, also slowed */
+  animation: bond-rotate 14s linear infinite reverse;
 }
 
-.hud-top {
-  position: absolute;
-  top: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
+.bond-barrel-center {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 35%,
+    oklch(0.25 0.02 85),
+    oklch(0.08 0.01 85) 60%,
+    oklch(0.04 0 0) 100%
+  );
+  border: 2px solid oklch(0.78 0.18 85 / 0.5);
   display: flex;
-  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 20px oklch(0 0 0 / 0.8), 0 0 15px
+    oklch(0.78 0.18 85 / 0.3);
 }
 
-.hud-bottom {
-  position: absolute;
-  bottom: 2rem;
-  left: 2rem;
-  right: 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-}
-
-.hud-stat,
-.hud-health,
-.hud-ammo {
-  background: oklch(0.1 0.02 240 / 0.6);
+/* ---------- HUD Panels ---------- */
+.hud-panel {
+  background: oklch(0.08 0.01 85 / 0.85);
+  border: 1px solid oklch(0.78 0.18 85 / 0.4);
   backdrop-filter: blur(8px);
-  border: 1px solid oklch(0.3 0.04 240 / 0.3);
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  animation: hud-flicker 8s ease-in-out infinite;
 }
 
-.hud-health {
-  min-width: 200px;
-}
-
-.hud-label {
-  font-size: 0.75rem;
-  color: oklch(0.6 0.06 220);
+.hud-panel-header {
+  border-bottom: 1px solid oklch(0.78 0.18 85 / 0.3);
+  padding: 0.5rem 1rem;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  color: oklch(0.78 0.18 85 / 0.7);
 }
 
-.hud-value {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: var(--game-glow);
-  text-shadow: 0 0 10px oklch(0.7 0.12 210 / 0.3);
+/* ---------- Loading Card ---------- */
+.loading-card {
+  background: oklch(0.06 0.01 85 / 0.95);
+  border: 1px solid oklch(0.78 0.18 85 / 0.3);
+  box-shadow: 0 0 40px oklch(0 0 0 / 0.8), inset 0 1px 0
+    oklch(0.78 0.18 85 / 0.1);
+  animation: cinematic-fade-in 1.2s ease-out forwards;
 }
 
-.hud-value-small {
-  font-size: 0.875rem;
-  color: oklch(0.7 0.08 220);
-}
-
-.health-bar-container {
-  width: 100%;
-}
-
-.health-bar-bg {
-  width: 100%;
-  height: 8px;
-  background: oklch(0.2 0.02 240 / 0.5);
-  border-radius: 4px;
+.loading-progress-track {
+  background: oklch(0.15 0.02 85 / 0.5);
+  border: 1px solid oklch(0.78 0.18 85 / 0.2);
   overflow: hidden;
 }
 
-.health-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--game-accent), var(--game-glow));
-  border-radius: 4px;
-  transition: width 0.3s ease;
-  box-shadow: 0 0 10px oklch(0.65 0.1 200 / 0.5);
+.loading-progress-fill {
+  background: linear-gradient(
+    90deg,
+    oklch(0.65 0.15 85),
+    oklch(0.78 0.18 85),
+    oklch(0.88 0.16 85)
+  );
+  box-shadow: 0 0 10px oklch(0.78 0.18 85 / 0.6);
+  transition: width 0.5s ease-out;
 }
 
-.hud-footer {
+.loading-stage-label {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: oklch(0.78 0.18 85 / 0.6);
+}
+
+/* ---------- Error Card ---------- */
+.error-card {
+  background: oklch(0.06 0.01 85 / 0.97);
+  border: 1px solid oklch(0.55 0.2 25 / 0.5);
+  box-shadow: 0 0 40px oklch(0 0 0 / 0.8), 0 0 20px oklch(0.55 0.2 25 / 0.1);
+}
+
+/* ---------- Buttons ---------- */
+.btn-bond-primary {
+  background: linear-gradient(135deg, oklch(0.72 0.17 85), oklch(0.82 0.19 85));
+  color: oklch(0.08 0.01 85);
+  border: none;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.btn-bond-primary:hover {
+  background: linear-gradient(135deg, oklch(0.82 0.19 85), oklch(0.92 0.17 85));
+  box-shadow: 0 0 20px oklch(0.78 0.18 85 / 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-bond-outline {
+  background: transparent;
+  color: oklch(0.78 0.18 85);
+  border: 1px solid oklch(0.78 0.18 85 / 0.5);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+.btn-bond-outline:hover {
+  border-color: oklch(0.78 0.18 85);
+  background: oklch(0.78 0.18 85 / 0.1);
+  box-shadow: 0 0 15px oklch(0.78 0.18 85 / 0.3);
+}
+
+/* ---------- Health / Ammo ---------- */
+.health-bar-track {
+  background: oklch(0.12 0.01 85);
+  border: 1px solid oklch(0.78 0.18 85 / 0.2);
+}
+
+.health-bar-fill-high {
+  background: oklch(0.65 0.18 145);
+}
+.health-bar-fill-medium {
+  background: oklch(0.72 0.18 85);
+}
+.health-bar-fill-low {
+  background: oklch(0.55 0.2 25);
+}
+
+.ammo-pip {
+  width: 8px;
+  height: 16px;
+  border: 1px solid oklch(0.78 0.18 85 / 0.4);
+  background: oklch(0.78 0.18 85 / 0.15);
+  transition: all 0.15s ease;
+}
+
+.ammo-pip.active {
+  background: oklch(0.78 0.18 85);
+  box-shadow: 0 0 6px oklch(0.78 0.18 85 / 0.6);
+}
+
+/* ---------- Scan line overlay ---------- */
+.scan-line-overlay::after {
+  content: "";
   position: absolute;
-  bottom: 0.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    oklch(0 0 0 / 0.03) 2px,
+    oklch(0 0 0 / 0.03) 4px
+  );
+  pointer-events: none;
+}
+
+/* ---------- Gold glow pulse ---------- */
+.gold-pulse {
+  animation: gold-pulse 2s ease-in-out infinite;
+}
+
+/* ---------- Muzzle flash ---------- */
+.muzzle-flash {
+  animation: muzzle-flash-anim 0.1s ease-out forwards;
+}
+
+/* ---------- Title reveal ---------- */
+.title-reveal {
+  animation: title-reveal 2s ease-out forwards;
 }

@@ -1,4 +1,4 @@
-import { useRef, useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from "react";
 
 export interface WeaponState {
   isFiring: boolean;
@@ -6,7 +6,7 @@ export interface WeaponState {
   showMuzzleFlash: boolean;
 }
 
-export function useWeapon(fireRate: number = 200) {
+export function useWeapon(fireRate = 200) {
   const weaponState = useRef<WeaponState>({
     isFiring: false,
     lastFireTime: 0,
@@ -17,33 +17,33 @@ export function useWeapon(fireRate: number = 200) {
   const isMountedRef = useRef(true);
 
   useEffect(() => {
-    console.log('🔫 Weapon hook initialized at', new Date().toISOString());
+    console.log("🔫 Weapon hook initialized at", new Date().toISOString());
     isMountedRef.current = true;
 
     return () => {
-      console.log('🔫 Weapon hook cleaning up at', new Date().toISOString());
+      console.log("🔫 Weapon hook cleaning up at", new Date().toISOString());
       isMountedRef.current = false;
-      
+
       // Clear any active timers
       if (muzzleFlashTimerRef.current) {
         clearTimeout(muzzleFlashTimerRef.current);
-        console.log('⏱️ Muzzle flash timer cleared');
+        console.log("⏱️ Muzzle flash timer cleared");
       }
-      
+
       // Reset weapon state
       weaponState.current = {
         isFiring: false,
         lastFireTime: 0,
         showMuzzleFlash: false,
       };
-      
-      console.log('✅ Weapon hook cleanup complete');
+
+      console.log("✅ Weapon hook cleanup complete");
     };
   }, []);
 
   const fire = useCallback(() => {
     if (!isMountedRef.current) {
-      console.log('⏭️ Weapon unmounted, ignoring fire');
+      console.log("⏭️ Weapon unmounted, ignoring fire");
       return false;
     }
 
